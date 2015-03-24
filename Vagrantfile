@@ -6,7 +6,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :hub do |hub|
     hub.vm.network "private_network", ip: "192.168.123.3"
-    hub.vm.synced_foler "./var/cfengine/masterfiles/", "/var/cfengine/masterfiles",
+    hub.vm.synced_folder "./var/cfengine/masterfiles/", "/var/cfengine/masterfiles",
       owner: "root", group: "root"
     hub.vm.provision "cfengine" do |cf|
       cf.am_policy_hub = true
