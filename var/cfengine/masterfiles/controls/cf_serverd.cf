@@ -1,0 +1,59 @@
+body server control
+# @description Define behavior of cf-serverd.
+{
+  allowciphers     => "AES256-GCMSHA384:AES256-SHA";
+  allowconnects    => { "127.0.0.1", "::1", @{def.acl} };
+  allowallconnects => { "127.0.0.1", "::1", @{def.acl} };
+  trustkeysfrom    => { @{def.trustkeysfrom} };
+  maxconnections   => "20";
+  allowusers       => { "root" };
+  denybadclocks    => "false";
+  cfruncommand     => "${def.cf_runagent_shell} -c \"${sys.cf_agent} -f ${sys.update_policy_path}\" ; ${sys.cf_agent}";
+}
+
+bundle server access_rules()
+# @descprition Promise access to a specified resources.
+{
+  access:
+  
+    any::
+
+      "${def.dir_masterfiles}"
+        comment   => "Grant access to the policy updates",
+        handle    => "server_access_grant_access_masterfiles",
+        admit_ips => { @{def.acl} };
+
+      "${def.dir_modules}"
+        comment   => "Grant access to the modules directory",
+        handle    => "server_access_grant_access_modules",
+        admit_ips => { @{def.acl} };
+
+      "${def.dir_bin}"
+        comment   => "Grant access to binaries for cf-runagent",
+        handle    => "server_access_grant_access_bin",
+        admit_ips => { @{def.acl} };
+
+      "${def.dir_shared_files}"
+        comment   => "Grant access to shared configuration files",
+        handle    => "server_acces_grant_access_shared_files",
+        admit_ips => { @{def.acl} };
+
+      "${def.dir_tools}"
+        comment   => "Grant access to custom tools",
+        handle    => "server_access_grant_access_tools",
+        admit_ips => { @{def.acl} };
+
+      "${def.dir_reports}"
+        comment   => "Grant access to host info reports",
+        handle    => "server_access_grant_access_reports",
+        admit_ips => { @{def.acl} };
+
+      "${def.cf_runagent_shell}"
+        comment   => "Grant access to shell for cfruncommand",
+        handle    => "server_access_grant_access_shell",
+        admit_ips => { @{def.acl} };
+
+  roles:
+
+    ".*" authorize => { "root" };
+}

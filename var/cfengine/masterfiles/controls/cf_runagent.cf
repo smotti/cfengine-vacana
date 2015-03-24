@@ -1,0 +1,10 @@
+body runagent control
+# @description Define behavior of cf-runagent.
+{
+  any::
+    
+    hosts    => { "127.0.0.1" };
+    timeout  => "10";
+    encrypt  => "true";
+    trustkey => "true";   # Because of infrastructure automation.
+}

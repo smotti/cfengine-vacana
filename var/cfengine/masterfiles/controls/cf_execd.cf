@@ -1,0 +1,9 @@
+body executor control
+# @description Define the behavior of cf-execd.
+{
+  any::
+
+    splaytime => "4";
+    schedule  => { "Min00", "Min20", "Min40" };
+    exec_command => "${sys.cf_agent} -f \"${sys.update_policy_path}\"; ${sys.cf_agent} -Dcf_execd_initiated";
+}

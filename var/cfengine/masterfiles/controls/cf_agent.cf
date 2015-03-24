@@ -1,0 +1,16 @@
+body agent control
+# @description Define the behavior of cf-agent.
+{
+  any::
+    
+    ifelapsed          => "1";
+    skipidentify       => "true";
+    abortclasses       => { "cfengine_3_3", "cfengine_3_4" };
+    default_repository => "/var/cfengine/file_repository";
+    default_timeout    => "10";
+    defaultcopytype    => "digest";
+
+  debian::
+
+    environment => { @{def.environment_vars} };
+}
