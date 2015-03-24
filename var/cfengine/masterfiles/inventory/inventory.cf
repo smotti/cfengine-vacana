@@ -1,0 +1,92 @@
+###############################################################################
+#
+# Bundle to fetch host_info_reports from lastseen nodes
+#
+###############################################################################
+
+bundle agent inventory_client_get
+# @brief Fetch host_info_report from lastseen clients/nodes
+{
+  meta:
+    "purpose" string => "Fetch the host_info_report from lastseen clients";
+
+  vars:
+    "report_dir"
+      comment => "Path to where reports are stored",
+      handle  => "inventory_client_get_vars_report_dir",
+      string  => "${sys.workdir}/reports";
+
+    am_policy_hub::
+      "client_report_dir"
+        comment => "Path to where reports of individual clients are stored",
+        handle  => "inventory_client_get_vars_client_report_dir",
+        string  => "${report_dir}/client_reports";
+
+      "lastseen"
+        comment => "Host seen within the last hour",
+        handle  => "inventory_client_get_vars_lastseen",
+        slist   => { hostsseen("1", "lastseen", "address") };
+
+      "clients" 
+        comment => "Add policy hub to client list",
+        handle  => "inventory_client_get_vars_clients",
+        slist   => { "${sys.policy_hub}", "@{lastseen}" };
+
+  classes:
+    "tidy_client_report_dir"
+      comment    => "Set class every 60 mintues to remove old client reports",
+      handle     => "inventory_client_get_classes_tidy_client_report_dir",
+      action     => if_elapsed("60"),
+      expression => "any";
+
+  files:
+    "${report_dir}" -> { "host inventory" }
+      comment => "Ensure ${report_dir} exists",
+      handle  => "inventory_client_get_files_report_dir",
+      action  => efl_delta_reporting(
+        "${this.handle}", "${this.promiser}", "host inventory", "1"),
+      classes => efl_rkn("${this.promiser}", "${this.handle}"),
+      create  => "true",
+      perms   => m("644");
+
+    am_policy_hub::
+      "${client_report_dir}" -> { "host inventory" }
+        comment => "Ensure ${client_report_dir} exists on policy hub",
+        handle  => "inventory_client_get_files_client_report_dir",
+        action  => efl_delta_reporting(
+          "${this.handle}", "${this.promiser}", "host inventory", "1"),
+        classes => efl_rkn("${this.promiser}", "${this.handle}"),
+        create  => "true",
+        perms   => m("644");
+
+    am_policy_hub.tidy_client_report_dir::
+      "${client_report_dir}" -> { "host inventory" }
+        comment     => "Garbage collection of old inventories",
+        handle      => "inventory_client_get_files_client_report_dir_tidy",
+        action      => efl_delta_reporting(
+          "${this.handle}", "${this.promiser}", "host inventory", "1"),
+        classes     => efl_rkn("${this.promiser}", "${this.handle}"),
+        file_select => plain,
+        delete      => tidy;
+
+  methods:
+    am_policy_hub::
+      "inventory"
+        comment   => "Background for parallel processing",
+        action    => bg("5", "5"),
+        usebundle => bg_inventory_get("${client_report_dir}", "${clients}");
+
+}
+
+bundle agent bg_inventory_get(download_dir, clients)
+# @brief Run background jobs to fetch the host info reports
+{
+  files:
+    "${download_dir}/${clients}.txt" -> { "host inventory" }
+      comment   => "Download client host info report",
+      handle    => "bg_inventory_get_files_client_report",
+      classes   => if_repaired("insert_host_inventory_for_${clients}"),
+      perms     => m("644"),
+      copy_from => remote_dcp(
+        "${sys.workdir}/reports/host_info_report.txt", "${clients}");
+}
