@@ -1,0 +1,17 @@
+###############################################################################
+# Define inputs that control the behaviors of the daemons
+###############################################################################
+bundle common cfengine_controls
+{
+  vars:
+
+    "inputs"
+      comment => "Control bodies of CFE daemons",
+      handle  => "commen_cfengine_controls_vars_inputs",
+      slist   => {
+        "controls/cf_agent.cf",
+        "controls/cf_execd.cf",
+        "controls/cf_runagent.cf",
+        "controls/cf_serverd.cf",
+      };
+}
