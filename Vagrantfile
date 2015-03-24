@@ -3,10 +3,6 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "cargomedia/debian-7-amd64-plain"
-  config.vm.provision = "ansible" do |ansible|
-    ansible.playbook = "provision/common.yml"
-    ansible.sudo = true
-  end
 
   config.vm.define :hub do |hub|
     hub.vm.network "private_network", ip: "192.168.123.3"
