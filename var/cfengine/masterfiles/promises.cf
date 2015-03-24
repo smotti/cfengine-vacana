@@ -1,0 +1,30 @@
+##############################################################################
+# Body common control
+# This is the entry point for CFEngine
+##############################################################################
+body common control
+{
+  inputs => {
+    # Global/Common bundles and bodies
+    "def.cf",
+    "controls.cf",
+    @{cfengine_controls.inputs},
+    "stdlib.cf",
+    @{cfengine_stdlib.inputs},
+
+    # CFE internals
+    "cfe_internal/host_info_report.cf",
+
+    # Our custom stuff
+    "inventory/inventory.cf",
+  };
+
+  bundlesequence => { 
+    # Common bundles first
+    def,
+
+    # Host inventory
+    host_info_report,
+    inventory_client_get,
+  };
+}
