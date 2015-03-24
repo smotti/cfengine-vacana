@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
       cf.am_policy_hub = true
     end
     hub.vm.provider "virtualbox" do |v|
-      v.name = "cfe_hub"
+      v.name = "vacana_hub"
       v.cpus = 1
       v.memory = 256
     end
@@ -24,7 +24,7 @@ Vagrant.configure(2) do |config|
       cf.policy_server_address = "192.168.123.3"
     end
     node.vm.provider "virtualbox" do |v|
-      v.name = "cfe_node"
+      v.name = "vacana_node"
       v.cpus = 1
       v.memory = 256
     end
