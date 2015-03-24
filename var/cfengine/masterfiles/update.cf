@@ -1,18 +1,9 @@
-# This is a work in progress and is not well tested.
-
-# This file is alternative update file. It is simpler, yet reduces server load
-# and uses server reduncancy.
-
-# namespace left out due to bug https://cfengine.com/dev/issues/4762
-# body file control
-# {
-#    namespace => "eflu";
-# }
+# Credits go to Neil H. Watson, because this is a modified version of his
+# update.cf the comes with the EFL lib.
 
 body common control
 {
-   inputs => { "lib/3.6/EFL/efl_common.cf" };
-   bundlesequence => { "list_backup", "efl_c", "main" };
+   bundlesequence => { "list_backup", "main" };
 }
 
 bundle common list_backup
@@ -26,10 +17,22 @@ bundle common list_backup
       slist => { ${sys.policy_hub} };
 }
 
-bundle agent build_efl_manifest
+bundle common update_c
 {
   meta:
-    "purpose" string => "Run cf-manifest to update efl_manifest.txt";
+    "purpose" string => "Vars and classes for other bundles required during update process";
+
+  vars:
+    any::
+      "masterfiles"
+        comment => "Where to find the masterfiles on the policy hub",
+        string  => "${sys.workdir}/masterfiles";
+}
+
+bundle agent build_manifest
+{
+  meta:
+    "purpose" string => "Run cf-manifest to update manifest.txt";
 
   vars:
     "cmd"
@@ -39,33 +42,34 @@ bundle agent build_efl_manifest
   commands:
     am_policy_hub::
       "${cmd}"
-        comment => "Create new efl_manifest.txt",
-        handle  => "build_efl_manifest_commands_cf_manifest",
+        comment => "Create new manifest.txt",
+        handle  => "build_manifest_commands_cf_manifest",
         contain => in_shell_and_silent;
 }
 
 bundle agent config
 {
-   meta:
-      "purpose" string => "User defined configs here.";
+  meta:
+    "purpose" string => "User defined configs here.";
 
-   vars:
+  vars:
+    any::
       "modules_path"
-         comment => "Where to find modules on the policy server.",
-         string  => "${sys.workdir}/modules";
+        comment => "Where to find modules on the policy server.",
+        string  => "${sys.workdir}/modules";
 
       "inputs_manifest"
-         comment => "Manifest file to determine what inputs to download",
-         string  => "efl_manifest.txt";
+        comment => "Manifest file to determine what inputs to download",
+        string  => "manifest.txt";
 
       "cfengine_procs"
-         comment => "CFEngine processes to start or restart",
-         slist   => { "cf-serverd", "cf-execd", "cf-monitord" };
+        comment => "CFEngine processes to start or restart",
+        slist   => { "cf-serverd", "cf-execd", "cf-monitord" };
 
-      policy_server|am_policy_hub::
-         "modules"
-            comment => "Modules required for a minimum working system.",
-            slist   => { "cf-manifest" };
+    policy_server|am_policy_hub::
+      "modules"
+        comment => "Modules required for a minimum working system.",
+        slist   => { "cf-manifest" };
       
    classes:
       "daily_inputs_sync_with_purge"
@@ -83,20 +87,15 @@ bundle agent main
       "purpose" string => "Drives bundle order through method calls.";
 
    methods:
-      "Build classes and vars"
-         handle     => "main_methods_efl_main",
-         comment    => "Build required vars and classes",
-         usebundle  => efl_main( "${sys.workdir}/inputs/efl_data/update/main.json" );
-
       "Load configs"
          handle    => "main_methods_config",
          usebundle => config;
 
       am_policy_hub::
-        "Build new efl_manifest.txt"
-          comment   => "Build/Update the efl_manifest.txt",
+        "Build new manifest.txt"
+          comment   => "Build/Update the manifest.txt",
           handle    => "main_methods_build_manifest",
-          usebundle => build_efl_manifest;
+          usebundle => build_manifest;
 
       !daily_inputs_sync_with_purge::
          "Download manifest"
@@ -132,8 +131,7 @@ bundle agent download_manifest( ref )
          handle    => "download_manifest_files_inputs_manifest",
          perms     => mog( "600", "root", "root" ),
          copy_from => secure_cp( 
-            "${efl_global_strings.masterfiles}/${ref}",
-            # "@{eflu:config.policy_servers}" # prefix with namespace because of bug
+            "${update_c.masterfiles}/${ref}",
             "@{list_backup.policy_servers}" 
             );
 }
@@ -149,7 +147,7 @@ bundle agent inputs_purge
          perms        => mog( "600", "root", "root" ),
          classes      => if_repaired( "kill_cf_procs" ),
          depth_search => recurse( "inf" ),
-         copy_from    => secure_sync( "${efl_global_strings.masterfiles}", "@{list_backup.policy_servers}" );
+         copy_from    => secure_sync( "${update_c.masterfiles}", "@{list_backup.policy_servers}" );
 
    processes:
       kill_cf_procs::
@@ -166,14 +164,30 @@ bundle agent inputs_and_modules( ref )
       "purpose" string => "Download inputs determined by manifest file.";
 
    vars:
+      "comment"
+        comment => "Comment string in manifest.txt",
+        string  => "\s*#[^\n]*";
+
+      "array_delimiter"
+        comment => "Field delimiter for CSV data files read by data_readstringarrayidx",
+        string  => "\s*;;\s*";
+
+      "max_num"
+        comment => "Maximum number of lines to read from data file",
+        int     => "500";
+
+      "max_bytes"
+        comment => "Maximum number of bytes to read from data file",
+        string  => "1M";
+
       "manifest"
          comment => "Read data file for parsing.",
          data    => data_readstringarrayidx(
             "${ref}",
-            "${efl_c.comment}",
-            "${efl_c.array_delimiter}",
-            "${efl_c.max_num}",
-            "${efl_c.max_bytes}"
+            "${comment}",
+            "${array_delimiter}",
+            "${max_num}",
+            "${max_bytes}"
          );
 
       "i"
@@ -207,7 +221,7 @@ bundle agent inputs_and_modules( ref )
          comment    => "Download file shown to be new by the mainfest",
          ifvarclass => "download_${manifest_file_canon[${i}]}",
          classes    => if_repaired( "kill_cf_procs" ),
-         copy_from  => secure_cp( "${efl_global_strings.masterfiles}/${${manifest_file[${i}]}}", "@{list_backup.policy_servers}" );
+         copy_from  => secure_cp( "${update_c.masterfiles}/${${manifest_file[${i}]}}", "@{list_backup.policy_servers}" );
       
       "${sys.workdir}/inputs/${${manifest_file[${i}]}}"
          handle     => "inputs_and_modules_files_inputs_permissions",
