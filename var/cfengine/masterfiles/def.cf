@@ -1,0 +1,68 @@
+bundle common def
+# @description Common/global variables and classes belong here.
+{
+  vars:
+
+    any::
+      
+      "acl"
+        comment => "Define an acl for the machines to be granted access",
+        handle  => "common_def_vars_acl",
+        slist   => {
+          "192.168.100.0/24",
+        };
+
+      "trustkeysfrom"
+        comment => "From which machines keys can be trusted",
+        handle  => "common_def_vars_trustkeysfrom",
+        slist   => {
+          "192.168.100.0/24",
+        };
+
+      "dir_masterfiles"
+        comment => "Directory for policies on the policy hub",
+        handle  => "common_def_vars_dir_masterfiles",
+        string  => "${sys.masterdir}";
+
+      "dir_modules"
+        comment => "Directory for modules",
+        handle  => "common_def_vars_dir_modules",
+        string  => "${sys.workdir}/modules";
+
+      "dir_bin"
+        comment => "Directory for the cfengine binaries",
+        handle  => "common_def_vars_dir_bin",
+        string  => "${sys.bindir}";
+
+      "dir_reports"
+        comment => "Directory for host info reports (inventory)",
+        handle  => "common_def_vars_dir_reports",
+        string  => "${sys.workdir}/reports";
+
+      "dir_shared_files"
+	comment => "Directory for shared configuration files",
+	handle  => "common_def_vars_dir_shared_files",
+	string  => "${sys.workdir}/shared_files";
+
+      "dir_tools"
+        comment => "Directory for custom tools",
+        handle  => "common_def_vars_dir_tools",
+        string  => "${sys.workdir}/tools";
+
+    linux::
+    
+      "cf_runagent_shell"
+        comment => "Path to shell used by cf-runagent",
+        handle  => "common_def_vars_cf_runagent_shell",
+        string  => "/bin/bash";
+
+    debian::
+
+      "environment_vars"
+        comment => "Environment variables for the agent process. They are
+          inherited by child commands too.",
+        handle  => "common_def_vars_environment_vars",
+        slist   => {
+          "DEBIAN_FRONTEND=noninteractive",
+        };
+}
