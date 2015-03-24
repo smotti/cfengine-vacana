@@ -1,0 +1,20 @@
+body common control
+{
+  inputs => { "${sys.libdir}/stdlib.cf" };
+  bundlesequence => { lastseen };
+}
+
+body file control
+{
+  inputs => { @{stdlib_common.inputs} };
+}
+
+bundle agent lastseen()
+{
+  vars:
+    "hosts" slist => hostsseen("24", "lastseen", "address");
+    "all_hosts" slist => { @{hosts}, ${sys.policy_hub} };
+
+  reports:
+    "${all_hosts}";
+}
