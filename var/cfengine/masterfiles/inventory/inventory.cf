@@ -43,9 +43,9 @@ bundle agent inventory_client_get
     "${report_dir}" -> { "host inventory" }
       comment => "Ensure ${report_dir} exists",
       handle  => "inventory_client_get_files_report_dir",
-      action  => efl_delta_reporting(
-        "${this.handle}", "${this.promiser}", "host inventory", "1"),
-      classes => efl_rkn("${this.promiser}", "${this.handle}"),
+#      action  => efl_delta_reporting(
+#        "${this.handle}", "${this.promiser}", "host inventory", "1"),
+#      classes => efl_rkn("${this.promiser}", "${this.handle}"),
       create  => "true",
       perms   => m("644");
 
@@ -53,9 +53,9 @@ bundle agent inventory_client_get
       "${client_report_dir}" -> { "host inventory" }
         comment => "Ensure ${client_report_dir} exists on policy hub",
         handle  => "inventory_client_get_files_client_report_dir",
-        action  => efl_delta_reporting(
-          "${this.handle}", "${this.promiser}", "host inventory", "1"),
-        classes => efl_rkn("${this.promiser}", "${this.handle}"),
+#        action  => efl_delta_reporting(
+#          "${this.handle}", "${this.promiser}", "host inventory", "1"),
+#        classes => efl_rkn("${this.promiser}", "${this.handle}"),
         create  => "true",
         perms   => m("644");
 
@@ -63,9 +63,9 @@ bundle agent inventory_client_get
       "${client_report_dir}" -> { "host inventory" }
         comment     => "Garbage collection of old inventories",
         handle      => "inventory_client_get_files_client_report_dir_tidy",
-        action      => efl_delta_reporting(
-          "${this.handle}", "${this.promiser}", "host inventory", "1"),
-        classes     => efl_rkn("${this.promiser}", "${this.handle}"),
+#        action      => efl_delta_reporting(
+#          "${this.handle}", "${this.promiser}", "host inventory", "1"),
+#        classes     => efl_rkn("${this.promiser}", "${this.handle}"),
         file_select => plain,
         delete      => tidy;
 
