@@ -1,5 +1,5 @@
 ---
 - hosts: all
-  task:
+  tasks:
     - name: install cfengine
       apt: deb=/vagrant/provision/cfengine-community_3.6.5-1_amd64.deb
