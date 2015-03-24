@@ -1,0 +1,31 @@
+bundle common cfengine_stdlib
+{
+  meta:
+    "purpose" string => "Inlcude cfengine stdlib";
+
+  vars:
+    cfengine_3_6::
+      "lib_dir"
+        comment => "Path to stdlib for version 3.6",
+        string  => "lib/3.6";
+
+      "inputs"
+        comment => "List of stdlib files",
+        slist => {
+          "${lib_dir}/paths.cf",
+          "${lib_dir}/common.cf",
+          "${lib_dir}/commands.cf",
+          "${lib_dir}/packages.cf",
+          "${lib_dir}/files.cf",
+          "${lib_dir}/edit_xml.cf",
+          "${lib_dir}/services.cf",
+          "${lib_dir}/processes.cf",
+          "${lib_dir}/storage.cf",
+          "${lib_dir}/databases.cf",
+          "${lib_dir}/users.cf",
+          "${lib_dir}/monitor.cf",
+          "${lib_dir}/guest_environments.cf",
+          "${lib_dir}/bundles.cf",
+          "${lib_dir}/reports.cf",
+        };
+}
