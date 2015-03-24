@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: bootstrap cfengine
+      shell: cf-agent -B {{ ansible_eth1.ipv4.address }}

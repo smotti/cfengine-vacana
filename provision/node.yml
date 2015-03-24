@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: bootstrap cfengine
+      shell: cf-agent -B 192.168.100.3
