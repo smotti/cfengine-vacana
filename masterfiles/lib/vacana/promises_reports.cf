@@ -1,0 +1,67 @@
+# - Read promises.log, separator is ';;'
+# - Canonify promiser
+# - Use reports promise type to report to file
+# - Use reports promise type to loop over promisers with ifvarclass to check
+#   outcome and report accordingly
+
+bundle agent va_promises_report
+{
+  meta:
+    
+    "purpose" string => "Read promises.log parse it, check outcome of promise
+      and write result to promises_outcome.log";
+    "tags" slist     => { "vacana" };
+
+  vars:
+    "params"
+      comment => "Fields in promises.log",
+      data    => parsejson(
+	'{
+	    "0": "handle",
+	    "1": "promiser",
+	    "2": "promisee"
+	  }'
+      );
+
+    "p"
+      comment => "Params indices",
+      slist   => getindices("params");
+
+    "read"
+      comment => "Read ${va_c.promises_log} into an array",
+      int => readstringarrayidx(
+	"promises",
+	"${va_c.promises_log}",
+	"",
+	"${va_c.log_delim}",
+	"${va_c.max_num}",
+	"${va_c.max_bytes}"
+      );
+
+    "i"
+      comment => "Index csv file",
+      slist   => getindices("promises");
+
+    # Note: This one is copied from efl lib.
+    "d[${i}][${params[${p}]}]"
+      comment => "Make final data set",
+      string  => "${promises[${i}][${p}]}";
+
+    "cp[${i}]"
+      comment => "Canonify promiser",
+      string  => canonify("${d[${i}][promiser]}");
+
+  reports:
+
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept",
+      comment    => "If promise of promiser was kept",
+      ifvarclass => "${cp[${i}]}_kept";
+
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired",
+      comment    => "If promise of promiser was repaired",
+      ifvarclass => "${cp[${i}]}_repaired";
+
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed",
+      comment    => "If promise of promiser was failed",
+      ifvarclass => "${cp[${i}]}_failed";
+}
