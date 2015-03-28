@@ -1,0 +1,11 @@
+bundle agent va_file_copy_local(src, dest, promisee)
+{
+  files:
+    "${dest}" -> { "${promisee}" }
+      comment   => "Copy ${src} to ${dest}",
+      handle    => "file_copy_local",
+      action    => va_log_promise(
+	"${this.handle}", "${this.promiser}", "${promisee}"),
+      classes   => classes_generic("${this.promiser}"),
+      copy_from => local_dcp("${src}");
+}
