@@ -1,0 +1,22 @@
+bundle agent va_file_remove(file, promisee)
+{
+  meta:
+    
+    "purpose" string => "Remove file from disk";
+    "tags"     slist => { "vacana" };
+
+  vars:
+    
+    "class_prefix"
+      comment => "Prefix for promise outcome classes",
+      string  => canonify("va_file_remove_${file}");
+
+  files:
+
+    "${file}" -> { "${promisee}" }
+      comment => "Remove file ${file}",
+      handle  => "va_file_remove_files_remove",
+      action  => va_log_promise("${this.handle}", "${this.promiser}", "${promisee}"),
+      classes => classes_generic("${class_prefix}"),
+      delete  => tidy;
+}
