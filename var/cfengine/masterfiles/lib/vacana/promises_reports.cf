@@ -53,15 +53,15 @@ bundle agent va_promises_report
 
   reports:
 
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept",
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
       comment    => "If promise of promiser was kept",
       ifvarclass => "${cp[${i}]}_kept";
 
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired",
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
       comment    => "If promise of promiser was repaired",
       ifvarclass => "${cp[${i}]}_repaired";
 
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed",
+    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
       comment    => "If promise of promiser was failed",
       ifvarclass => "${cp[${i}]}_failed";
 }
