@@ -27,6 +27,13 @@ bundle common va_c
     "max_bytes"
       comment => "Maximum number of bytes to read from a file",
       string  => "2M";
+
+    "inputs"
+      comment => "Convenient variable to include the whole lib easily",
+      slist => { 
+	"${this.promise_dirname}/promises_reports.cf",
+	"${this.promise_dirname}/files/file_copy_local.cf",
+	"${this.promise_dirname}/files/file_remove.cf",
 }
 
 body action va_log_promise(handle, promiser, promisee)
