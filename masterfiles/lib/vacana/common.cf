@@ -1,0 +1,38 @@
+bundle common va_c
+{
+  meta:
+
+    "purpose" string => "Common classes and variables for vacana lib.";
+    "tags" slist     => { "vacana" };
+
+  vars:
+    
+    "promise_log"
+      comment => "File to log promises to without their outcome",
+      string  => "/var/cfengine/vacana/promises.log";
+
+
+    "outcome_log"
+      comment => "File to log promises with their outcome, used by promises_outcome bundle",
+      string  => "/var/cfengine/vacana/promises_outcome.log";
+
+    "log_delim"
+      comment => "Delimiter used in promise logs",
+      string  => "\s*;;\s*";
+
+    "max_num"
+      comment => "Maximum number of lines to read from a file",
+      int     => "300";
+
+    "max_bytes"
+      comment => "Maximum number of bytes to read from a file",
+      string  => "2M";
+}
+
+body action va_log_promise(handle, promiser, promisee)
+{
+  log_kept     => "${va_c.promise_log}";
+  log_repaired => "${va_c.promise_log}";
+  log_failed   => "${va_c.promise_log}";
+  log_string   => "${handle} ;; ${promiser} ;; ${promisee}";
+}
