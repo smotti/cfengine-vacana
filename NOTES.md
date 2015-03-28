@@ -10,3 +10,8 @@
 * Don't need extra classes bundles, because they are evaluated before methods,
   so they can be specified before all the method calls, and one can use
   classes defined by bundles to conditioninally run other methods
+* Start with the most used promises
+    * copying files and setting their perms
+    * installing packages via package managers
+    * managing services
+    * executing commands
