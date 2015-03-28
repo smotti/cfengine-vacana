@@ -1,11 +1,23 @@
 bundle agent va_file_copy_local(src, dest, promisee)
 {
+  meta:
+    
+    "purpose" string => "Copy a local file from src to dest";
+    "tags" slist     => { "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix promise outcome classes",
+      string  => canonify("va_file_copy_local_${dest}");
+
   files:
+
     "${dest}" -> { "${promisee}" }
       comment   => "Copy ${src} to ${dest}",
-      handle    => "file_copy_local",
+      handle    => "va_file_copy_local_files_copy",
       action    => va_log_promise(
 	"${this.handle}", "${this.promiser}", "${promisee}"),
-      classes   => classes_generic("${this.promiser}"),
+      classes   => classes_generic("${class_prefix}"),
       copy_from => local_dcp("${src}");
 }
