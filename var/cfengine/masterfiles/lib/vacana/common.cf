@@ -34,6 +34,7 @@ bundle common va_c
 	"${this.promise_dirname}/promises_reports.cf",
 	"${this.promise_dirname}/files/file_copy_local.cf",
 	"${this.promise_dirname}/files/file_remove.cf",
+      }
 }
 
 body action va_log_promise(handle, promiser, promisee)
