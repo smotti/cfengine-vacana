@@ -12,7 +12,7 @@
 </node>
 <node CREATED="1427512713415" ID="ID_1178069998" MODIFIED="1427512723472" TEXT="Based on CFEngine-Community"/>
 </node>
-<node CREATED="1427511356677" FOLDED="true" ID="ID_804309881" MODIFIED="1427513624698" POSITION="left" TEXT="Why">
+<node CREATED="1427511356677" FOLDED="true" ID="ID_804309881" MODIFIED="1427546540677" POSITION="left" TEXT="Why">
 <font BOLD="true" NAME="SansSerif" SIZE="16"/>
 <icon BUILTIN="help"/>
 <node CREATED="1427511379107" ID="ID_1488239982" MODIFIED="1427511451337" TEXT="NCF">
@@ -71,7 +71,7 @@
 <icon BUILTIN="xmag"/>
 </node>
 </node>
-<node CREATED="1427512753211" FOLDED="true" ID="ID_1528087126" MODIFIED="1427514311986" POSITION="left" TEXT="Desicion">
+<node CREATED="1427512753211" ID="ID_1528087126" MODIFIED="1427546537558" POSITION="left" TEXT="Desicion">
 <font BOLD="true" NAME="SansSerif" SIZE="16"/>
 <icon BUILTIN="xmag"/>
 <icon BUILTIN="attach"/>
@@ -92,11 +92,7 @@
 <node CREATED="1427512972826" ID="ID_984467666" MODIFIED="1427513022157" TEXT="CON">
 <font BOLD="true" NAME="SansSerif" SIZE="13"/>
 <node CREATED="1427513268437" ID="ID_1103044659" MODIFIED="1427513299903" TEXT="More verbose than Clojure because it&apos;s an imperative language with OO features"/>
-<node CREATED="1427513540328" ID="ID_1365104921" MODIFIED="1427513602026" TEXT="Not so easy/simple to use parallel execution support ">
-<icon BUILTIN="help"/>
-<icon BUILTIN="pencil"/>
-<icon BUILTIN="xmag"/>
-</node>
+<node CREATED="1427513540328" ID="ID_1365104921" MODIFIED="1427546588240" TEXT="Seems to have only goroutines for concurrent work"/>
 </node>
 </node>
 <node CREATED="1427512965349" ID="ID_783742713" MODIFIED="1427513004447" TEXT="Clojure">
