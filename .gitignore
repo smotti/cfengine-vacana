@@ -2,3 +2,4 @@
 *.deb
 cf_promises_*
 manifest.txt
+.*.sw*
