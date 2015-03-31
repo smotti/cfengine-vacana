@@ -3,7 +3,7 @@ bundle agent va_file_copy_local(src, dest, promisee)
   meta:
     
     "purpose" string => "Copy a local file from src to dest";
-    "tags" slist     => { "vacana" };
+    "tags"     slist => { "files", "vacana" };
 
   vars:
 

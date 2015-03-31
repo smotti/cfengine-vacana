@@ -3,7 +3,7 @@ bundle agent va_file_remove(file, promisee)
   meta:
     
     "purpose" string => "Remove file from disk";
-    "tags"     slist => { "vacana" };
+    "tags"     slist => { "files", "vacana" };
 
   vars:
     
