@@ -12,34 +12,34 @@ bundle agent test_va_file_copy_local(test_file)
     test_all|test_files|test_va_file_copy_local::
 
       "test_va_file_copy_local_copy1"
-	comment   => "Copy test file (first)",
-	handle    => "test_va_file_copy_local_methods_copy1",
-	usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
+        comment   => "Copy test file (first)",
+	      handle    => "test_va_file_copy_local_methods_copy1",
+	      usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
 
       "test_va_file_copy_local_copy2"
-	comment   => "Copy test file (first)",
-	handle    => "test_va_file_copy_local_methods_copy2",
-	action    => immediate,
-	usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
+	      comment   => "Copy test file (first)",
+	      handle    => "test_va_file_copy_local_methods_copy2",
+	      action    => immediate,
+	      usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
 
       "test_va_file_copy_local_remove"
-	comment    => "Clean up",
-	handle     => "test_va_file_copy_local_methods_remove",
-	ifvarclass => "va_file_copy_local_${cdest}_repaired",
-	usebundle  => va_file_remove("${dest}", "${promisee}");
+	      comment    => "Clean up",
+	      handle     => "test_va_file_copy_local_methods_remove",
+	      ifvarclass => "va_file_copy_local_${cdest}_repaired",
+	      usebundle  => va_file_remove("${dest}", "${promisee}");
 
   reports:
 
     test_verbose::
 
       "PASS: test_va_file_copy_local" 
-	ifvarclass => "va_file_copy_local_${cdest}_repaired.va_file_remove_${cdest}_repaired";
+	      ifvarclass => "va_file_copy_local_${cdest}_repaired.va_file_remove_${cdest}_repaired";
 
     any::
 
       "FAIL: test_va_file_copy_local - copy failed"
-	ifvarclass => "va_file_copy_local_${cdest}_failed";
+	      ifvarclass => "va_file_copy_local_${cdest}_failed";
 
       "FAIL: test_va_file_copy_local - delete failed"
-	ifvarclass => "va_file_remove_${cdest}_failed";
+	      ifvarclass => "va_file_remove_${cdest}_failed";
 }
