@@ -33,15 +33,15 @@ bundle common va_c
     "inputs"
       comment => "Convenient variable to include the whole lib easily",
       slist => { 
-	"${this.promise_dirname}/promises_reports.cf",
-	"${this.promise_dirname}/files/file_copy_local.cf",
-	"${this.promise_dirname}/files/file_remove.cf",
+	      "${this.promise_dirname}/promises_reports.cf",
+	      "${this.promise_dirname}/files/file_copy_local.cf",
+	      "${this.promise_dirname}/files/file_remove.cf",
       };
 
     "test_inputs"
       comment => "Convenient variable to include testing bundles",
       slist   => {
-	"${this.promise_dirname}/files/tests/file_copy_local.cf",
+	      "${this.promise_dirname}/files/tests/file_copy_local.cf",
       };
 }
 
