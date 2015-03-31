@@ -47,7 +47,7 @@ bundle agent inventory_client_get
 #        "${this.handle}", "${this.promiser}", "host inventory", "1"),
 #      classes => efl_rkn("${this.promiser}", "${this.handle}"),
       create  => "true",
-      perms   => m("644");
+      perms   => m("700");
 
     am_policy_hub::
       "${client_report_dir}" -> { "host inventory" }
@@ -57,7 +57,7 @@ bundle agent inventory_client_get
 #          "${this.handle}", "${this.promiser}", "host inventory", "1"),
 #        classes => efl_rkn("${this.promiser}", "${this.handle}"),
         create  => "true",
-        perms   => m("644");
+        perms   => m("700");
 
     am_policy_hub.tidy_client_report_dir::
       "${client_report_dir}" -> { "host inventory" }
@@ -86,7 +86,7 @@ bundle agent bg_inventory_get(download_dir, clients)
       comment   => "Download client host info report",
       handle    => "bg_inventory_get_files_client_report",
       classes   => if_repaired("insert_host_inventory_for_${clients}"),
-      perms     => m("644"),
+      perms     => m("600"),
       copy_from => remote_dcp(
         "${sys.workdir}/reports/host_info_report.txt", "${clients}");
 }
