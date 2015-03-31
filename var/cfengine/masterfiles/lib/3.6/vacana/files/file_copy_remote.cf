@@ -1,0 +1,23 @@
+bundle agent va_file_copy_remote(src, server, dest, promisee)
+{
+  meta:
+    
+    "purpose" string => "Copy src from server to local dest";
+    "tags"     slist => { "files", "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix promise outcome classes",
+      string  => canonify("va_file_copy_remote_${dest}");
+
+  files:
+
+    "${dest}" -> { "${promisee}" }
+      comment   => "Copy ${src} from ${server} to local ${dest}",
+      handle    => "va_file_copy_remote_files_copy",
+      action    => va_log_promise(
+        "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes   => classes_generic("${class_prefix}"),
+      copy_from => secure_cp("${src}", "${server}");
+}
