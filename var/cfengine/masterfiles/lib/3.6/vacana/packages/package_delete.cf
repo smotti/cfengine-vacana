@@ -1,0 +1,55 @@
+bundle agent va_package_delete(package, promisee)
+{
+  meta:
+
+    "purpose" string => "Delete given package via package manager";
+    "tags"     slist => { "packages", "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix promise outcome classes with this",
+      string  => canonify("va_package_delete_${package}");
+
+  packages:
+
+    debian::
+      "${package}" -> { "${promisee}" }
+        comment        => "Delete ${package} from system via package manager",
+        handle         => "va_package_delete_packages_delete",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "delete",
+        package_method => apt_get_permissive;
+
+    redhat::
+      "${package}" -> { "${promisee}" }
+        comment        => "Delete ${package} from system via package manager",
+        handle         => "va_package_delete_packages_delete",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "delete",
+        package_method => yum_rpm_permissive;
+
+    suse::
+      "${package}" -> { "${promisee}" }
+        comment        => "Delete ${package} from system via package manager",
+        handle         => "va_package_delete_packages_delete",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "delete",
+        package_method => zypper;
+
+    !debian.!redhat.!suse::
+      "${package}" -> { "${promisee}" }
+        comment        => "Delete ${package} from system via package manager",
+        handle         => "va_package_delete_packages_delete",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "delete",
+        package_method => generic;
+}
