@@ -97,7 +97,7 @@ bundle agent cfe_internal_log_rotation
     enable_cfe_internal_log_rotation::
 
       "rotate_promise_summary"
-        comment   => "Rotate log files once their size reach 1MB, keep 10 versions";
+        comment   => "Rotate log files once their size reach 1MB, keep 10 versions",
         usebundle => logrotate("@{def.cfe_log_files}", "1m", "10");
 
       "rotate_outpus"
