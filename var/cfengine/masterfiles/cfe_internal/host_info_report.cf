@@ -134,6 +134,7 @@ bundle agent host_info_report_render_txt
     "$(host_info_report.host_info_report_output)"
       create => "true",
       edit_template => "$(host_info_report.host_info_report_template)",
+      perms => mog("0600", "root", "root"),
       handle => "host_info_report_files_host_info_report_output",
       classes => scoped_classes_generic("bundle", "host_info_report_output"),
       template_method => "mustache";
