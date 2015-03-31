@@ -1,5 +1,30 @@
 ###############################################################################
 #
+# cfe_internal_management
+# - manage log rotation
+# - manage to many processes
+#
+###############################################################################
+bundle agent cfe_internal_management
+{
+  methods:
+
+    any::
+
+      "any"
+        comment   => "Rotate CFEngine logs so we dont fill the disk",
+        handle    => "cfe_internal_management_log_rotation",
+        usebundle => cfe_internal_log_rotation;
+
+      # The bundle definition is in lib/3.6/cfe_internal.cf
+      "any"
+        comment   => "Remove accumulated reports if they grow too large in size",
+        handle    => "cfe_internal_management_cleanup_agent_reports",
+        usebundle => cfe_internal_cleanup_agent_reports;
+}
+
+###############################################################################
+#
 # cfe_internal_limit_robot_agents
 # - kill CFE processes and restart it when the processes grow
 #
