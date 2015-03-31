@@ -1,0 +1,20 @@
+bundle common vacana_lib
+{
+  vars:
+
+    "inputs"
+      comment => "Convenient variable to include the whole lib easily",
+      slist => { 
+        "${this.promise_dirname}/common.cf",
+	      "${this.promise_dirname}/promises_reports.cf",
+	      "${this.promise_dirname}/files/file_copy_local.cf",
+        "${this.promise_dirname}/files/file_copy_remote.cf",
+	      "${this.promise_dirname}/files/file_remove.cf",
+      };
+
+}
+
+body file control
+{
+  inputs => { "@{vacana_lib.inputs}" };
+}

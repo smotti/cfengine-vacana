@@ -28,13 +28,12 @@ bundle common va_c
       comment => "Maximum number of bytes to read from a file",
       string  => "2M";
 
-    # TODO: Have subbundles, that include all files of a promise type,
-    #	    and one for their tests.
     "inputs"
       comment => "Convenient variable to include the whole lib easily",
       slist => { 
 	      "${this.promise_dirname}/promises_reports.cf",
 	      "${this.promise_dirname}/files/file_copy_local.cf",
+        "${this.promise_dirname}/files/file_copy_remote.cf",
 	      "${this.promise_dirname}/files/file_remove.cf",
       };
 
