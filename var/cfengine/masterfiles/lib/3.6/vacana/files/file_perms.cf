@@ -1,0 +1,23 @@
+bundle agent  va_file_perms(file, mode, owner, group, promisee)
+{
+  meta:
+  
+    "purpose" string => "Set permissions for the given file.";
+    "tags"     slist => { "files", "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix promise outcome classes with this",
+      string  => canonify("va_file_perms_${file}");
+
+  files:
+  
+    "${file}" -> { "${promisee}" }
+      comment => "Set mode ${mode}, owner ${owner} and group ${group} for ${file}",
+      handle  => "va_file_perms_files_set_perms",
+      action  => va_log_promise(
+        "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes => classes_generic("${class_prefix}"),
+      perms   => mog("${mode}", "${owner}", "${group}");
+}

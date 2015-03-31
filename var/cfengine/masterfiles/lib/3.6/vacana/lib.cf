@@ -10,6 +10,7 @@ bundle common vacana_lib
 	      "${this.promise_dirname}/files/file_copy_local.cf",
         "${this.promise_dirname}/files/file_copy_remote.cf",
         "${this.promise_dirname}/files/file_edit_template.cf",
+        "${this.promise_dirname}/files/file_perms.cf",
 	      "${this.promise_dirname}/files/file_remove.cf",
       };
 }
