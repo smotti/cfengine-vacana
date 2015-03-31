@@ -1,9 +1,19 @@
-bundle agent test_va_file_copy_local(test_file)
+body common control
+{
+  inputs => {
+    "${sys.libdir}/stdlib.cf",
+    "${sys.libdir}/vacana/lib.cf",
+  };
+  bundlesequence => { "test_va_file_copy_local" };
+
+}
+
+bundle agent test_va_file_copy_local
 {
   vars:
 
-    "src"      string => "${test_file}";
-    "dest"     string => "/tmp/libpromises.la";
+    "src"      string => "${this.promise_dirname}/test_copy.txt";
+    "dest"     string => "/tmp/test_copy.txt";
     "cdest"    string => canonify("${dest}");
     "promisee" string => "test_va_file_copy_local";
 
@@ -11,15 +21,9 @@ bundle agent test_va_file_copy_local(test_file)
 
     test_all|test_files|test_va_file_copy_local::
 
-      "test_va_file_copy_local_copy1"
+      "test_va_file_copy_local_copy"
         comment   => "Copy test file (first)",
-	      handle    => "test_va_file_copy_local_methods_copy1",
-	      usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
-
-      "test_va_file_copy_local_copy2"
-	      comment   => "Copy test file (first)",
-	      handle    => "test_va_file_copy_local_methods_copy2",
-	      action    => immediate,
+	      handle    => "test_va_file_copy_local_methods_copy",
 	      usebundle => va_file_copy_local("${src}", "${dest}", "${promisee}");
 
       "test_va_file_copy_local_remove"
