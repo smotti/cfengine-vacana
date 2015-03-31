@@ -87,9 +87,15 @@ bundle agent main
       "purpose" string => "Drives bundle order through method calls.";
 
    methods:
-      "Load configs"
-         handle    => "main_methods_config",
-         usebundle => config;
+      any::
+        "Load configs"
+          handle    => "main_methods_config",
+          usebundle => config;
+
+        "Start processes"
+          handle     => "main_methods_start_procs",
+          depends_on => { "main_methods_config" },
+          usebundle  => start_procs;
 
       am_policy_hub::
         "Build new manifest.txt"
@@ -114,11 +120,6 @@ bundle agent main
             depends_on => { "main_methods_config" },
             usebundle  => inputs_purge;
 
-      any::
-         "Start processes"
-            handle     => "main_methods_start_procs",
-            depends_on => { "main_methods_config" },
-            usebundle  => start_procs;
 }
 
 bundle agent download_manifest( ref )
