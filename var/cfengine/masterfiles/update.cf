@@ -92,11 +92,6 @@ bundle agent main
           handle    => "main_methods_config",
           usebundle => config;
 
-        "Start processes"
-          handle     => "main_methods_start_procs",
-          depends_on => { "main_methods_config" },
-          usebundle  => start_procs;
-
       am_policy_hub::
         "Build new manifest.txt"
           comment   => "Build/Update the manifest.txt",
@@ -120,6 +115,11 @@ bundle agent main
             depends_on => { "main_methods_config" },
             usebundle  => inputs_purge;
 
+      any::
+        "Start processes"
+          handle     => "main_methods_start_procs",
+          depends_on => { "main_methods_config" },
+          usebundle  => start_procs;
 }
 
 bundle agent download_manifest( ref )
