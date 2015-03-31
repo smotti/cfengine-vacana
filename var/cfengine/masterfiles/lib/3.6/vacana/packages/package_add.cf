@@ -7,49 +7,12 @@ bundle agent va_package_add(package, promisee)
 
   vars:
 
-    "class_prefix"
-      comment => "Prefix promise outcome classes with this",
-      string  => canonify("va_package_add_${package}");
+    "cpackage" string => canonify("${package}");
 
-  packages:
+  methods:
 
-    debian::  
-      "${package}"
-        comment        => "Add ${package} to system via package manager",
-        handle         => "va_package_add_packages_add",
-        action         => va_log_promise(
-          "${this.handle}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
-        package_policy => "add",
-        package_method => apt_get_permissive;
-
-    redhat::  
-      "${package}"
-        comment        => "Add ${package} to system via package manager",
-        handle         => "va_package_add_packages_add",
-        action         => va_log_promise(
-          "${this.handle}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
-        package_policy => "add",
-        package_method => yum_rpm_permissive;
-
-    suse::  
-      "${package}"
-        comment        => "Add ${package} to system via package manager",
-        handle         => "va_package_add_packages_add",
-        action         => va_log_promise(
-          "${this.handle}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
-        package_policy => "add",
-        package_method => zypper;
-
-    !debian.!redhat.!suse::  
-      "${package}"
-        comment        => "Add ${package} to system via package manager",
-        handle         => "va_package_add_packages_add",
-        action         => va_log_promise(
-          "${this.handle}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
-        package_policy => "add",
-        package_method => generic;
+    "va_package_add_${cpackage}"
+      comment   => "Add ${package} to system via package manager",
+      handle    => "va_package_add_methods_package_manage",
+      usebundle => va_package_manage("add", "${package}", "${promisee}");
 }

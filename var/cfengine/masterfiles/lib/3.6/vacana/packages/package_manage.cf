@@ -1,0 +1,55 @@
+bundle agent va_package_manage(desired, package, promisee)
+{
+  meta:
+
+    "purpose" string => "Ensure desired state for package";
+    "tags"     slist => { "packages", "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix promise outcome classes with this",
+      string  => canonify("va_package_${desired}_${package}");
+
+  packages:
+
+    debian::  
+      "${package}"
+        comment        => "${desired} ${package} via package manager",
+        handle         => "va_package_add_packages_manage",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "${desired}",
+        package_method => apt_get_permissive;
+
+    redhat::  
+      "${package}"
+        comment        => "${desired} ${package} via package manager",
+        handle         => "va_package_add_packages_manage",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "${desired}",
+        package_method => yum_rpm_permissive;
+
+    suse::  
+      "${package}"
+        comment        => "${desired} ${package} via package manager",
+        handle         => "va_package_add_packages_manage",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "${desired}",
+        package_method => zypper;
+
+    !debian.!redhat.!suse::  
+      "${package}"
+        comment        => "${desired} ${package} via package manager",
+        handle         => "va_package_add_packages_add",
+        action         => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes        => classes_generic("${class_prefix}"),
+        package_policy => "${desired}",
+        package_method => generic;
+}
