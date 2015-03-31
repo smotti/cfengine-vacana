@@ -5,6 +5,7 @@ bundle common def
 
     any::
       
+      # cf-serverd access vars
       "acl"
         comment => "Define an acl for the machines to be granted access",
         handle  => "common_def_vars_acl",
@@ -19,6 +20,7 @@ bundle common def
           "192.168.100.0/24",
         };
 
+      # Directories to allow access to
       "dir_masterfiles"
         comment => "Directory for policies on the policy hub",
         handle  => "common_def_vars_dir_masterfiles",
@@ -40,14 +42,29 @@ bundle common def
         string  => "${sys.workdir}/reports";
 
       "dir_shared_files"
-	comment => "Directory for shared configuration files",
-	handle  => "common_def_vars_dir_shared_files",
-	string  => "${sys.workdir}/shared_files";
+	      comment => "Directory for shared configuration files",
+	      handle  => "common_def_vars_dir_shared_files",
+	      string  => "${sys.workdir}/shared_files";
 
       "dir_tools"
         comment => "Directory for custom tools",
         handle  => "common_def_vars_dir_tools",
         string  => "${sys.workdir}/tools";
+
+      # CFEngine's own log files
+      "cfe_log_files"
+        comment => "CFEngine's own log files",
+        slist   => {
+          "${sys.workdir}/cf3.${sys.uqhost}.runlog",
+          "${sys.workdir}/promise_summary.log",
+        };
+
+      "cfe_log_dirs"
+        comment => "CFEngine's log file dirs",
+        slist   => {
+          "${sys.workdir}/outputs",
+          "${sys.workdir}/reports",
+        };
 
     linux::
     
@@ -65,4 +82,12 @@ bundle common def
         slist   => {
           "DEBIAN_FRONTEND=noninteractive",
         };
+
+  classes:
+
+    ### Enable special features policies. Set to "any" to enable.
+
+    # Internal CFEngine log files rotation
+    "enable_cfe_internal_log_rotation"
+      expression => "any";
 }

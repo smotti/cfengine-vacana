@@ -15,12 +15,6 @@ bundle agent cfe_internal_management
         comment   => "Rotate CFEngine logs so we dont fill the disk",
         handle    => "cfe_internal_management_log_rotation",
         usebundle => cfe_internal_log_rotation;
-
-      # The bundle definition is in lib/3.6/cfe_internal.cf
-      "any"
-        comment   => "Remove accumulated reports if they grow too large in size",
-        handle    => "cfe_internal_management_cleanup_agent_reports",
-        usebundle => cfe_internal_cleanup_agent_reports;
 }
 
 ###############################################################################
@@ -88,4 +82,25 @@ body process_count check_monitord(n)
 {
   match_range         => "0,${n}";
   out_of_range_define => { "something_wrong_monitord" };
+}
+
+###############################################################################
+#
+# cfe_internal_log_rotation
+# - Rotate logs and clean up old files so the disk doesnt get full
+#
+###############################################################################
+bundle agent cfe_internal_log_rotation
+{
+  methods:
+    
+    enable_cfe_internal_log_rotation::
+
+      "rotate_promise_summary"
+        comment   => "Rotate log files once their size reach 1MB, keep 10 versions";
+        usebundle => logrotate("@{def.cfe_log_files}", "1m", "10");
+
+      "rotate_outpus"
+        comment   => "Delete outpus/* and reports/* files older than 7 days",
+        usebundle => prunedir("@{def.cfe_log_dirs}", "7");
 }
