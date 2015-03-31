@@ -1,0 +1,25 @@
+bundle agent va_file_edit_template(tmpl, dest, method, promisee)
+{
+  meta:
+
+    "purpose" string => "Render a template file of type method at dest";
+    "tags" slist     => { "files", "vacana" };
+
+  vars:
+  
+    "class_prefix"
+      comment => "Prefix promise outcome classes with this",
+      string  => canonify("va_file_edit_template_${dest}");
+
+  files:
+
+    "${dest}" -> { "${promisee}" }
+      comment         => "Render ${tmpl} of type ${method} at ${dest}",
+      handle          => "va_file_edit_template_files_render",
+      action          => va_log_promise("${this.handle}", "${this.promiser}", "${promisee}"),
+      classes         => classes_generic("${class_prefix}"),
+      create          => "true",
+      template_method => "${method}",
+      edit_defaults   => empty,
+      edit_template   => "${tmpl}";
+}
