@@ -1,4 +1,16 @@
 bundle agent  va_file_perms(file, mode, owner, group, promisee)
+# @depends  va_log_promise
+# @brief    Set permissions of 'file' to 'mode', 'owner' and 'group'
+#
+# @classes  va_file_perms_${cfile}_(kept|repaired|failed)
+#
+# NOTE: cfile is canonify("${file}")
+#
+# @param file       The file for which to set the permissions
+# @param mode       The access mode of the file
+# @param owner      The owner of the file
+# @param group      The group the file shall belong to
+# @param promisee   A promisee for this promise
 {
   meta:
   

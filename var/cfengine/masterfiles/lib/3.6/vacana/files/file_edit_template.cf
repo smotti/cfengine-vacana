@@ -1,4 +1,16 @@
 bundle agent va_file_edit_template(tmpl, dest, method, promisee)
+# @depends  va_log_promise
+# @brief    Edit a local 'tmpl' and render it at as 'dest', using the template
+#           method 'method'
+#
+# @classes  va_file_edit_template_${cdest}_(kept|repaired|failed)
+#
+# NOTE: cdest is canonify("${dest}")
+#
+# @param tmpl       The local template to use for rendering
+# @param dest       The destination of the rendered file
+# @param method     The template method to use: cfengine or mustache
+# @param promisee   A promisee for this promise
 {
   meta:
 

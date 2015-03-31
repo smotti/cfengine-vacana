@@ -1,4 +1,14 @@
 bundle agent va_file_copy_local(src, dest, promisee)
+# @depends  va_log_promise
+# @brief    Copy 'src' to 'dest' on local host
+#
+# @classes  va_file_copy_local_${cdest}_(kept|repaired|failed)
+#
+# NOTE: cdest is canonify("${dest}")
+#
+# @param src      The source file to copy
+# @param dest     The destination to copy the file to
+# @param promisee A promisee for this files promise
 {
   meta:
     

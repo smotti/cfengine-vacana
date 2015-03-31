@@ -1,4 +1,15 @@
 bundle agent va_package_manage(desired, package, promisee)
+# @depends  va_log_promise
+# @brief    Ensure that 'package' has 'desired' state
+#
+# @classes  va_package_${desired}_${cpackage}_(kept|repaired|failed)
+#
+# NOTE: cpackage is canonify("${package}")
+#
+# @param desired    Desired state of the package: add, delete, update,
+#                   addupate, reinstall, patch, verify
+# @param package    Name of the package to put into desired state
+# @param promisee   A promisee for this promise
 {
   meta:
 

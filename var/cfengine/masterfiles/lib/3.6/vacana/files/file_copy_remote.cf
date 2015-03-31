@@ -1,4 +1,15 @@
 bundle agent va_file_copy_remote(src, server, dest, promisee)
+# @depends  va_log_promise
+# @brief    Copy 'src' from remote 'server' to local 'dest'
+#
+# @classes  va_file_copy_remote_${cdest}_(kept|repaired|failed)
+#
+# NOTE: cdest is canonify("${dest}")
+#
+# @param src      The source file on the server
+# @param server   The server from which to get the 'src'
+# @param dest     The destination of the file on the local host
+# @param promisee A promisee for this files promise
 {
   meta:
     

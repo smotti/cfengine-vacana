@@ -1,4 +1,13 @@
 bundle agent va_file_remove(file, promisee)
+# @depends  va_log_promise
+# @brief    Remove a 'file' from host
+#
+# @classes  va_file_remove_${cfile}_(kept|repaired|failed)
+#
+# NOTE: cfile is canonify("${file}")
+#
+# @param file       The file to remove
+# @param promisee   A promisee for this promise
 {
   meta:
     
