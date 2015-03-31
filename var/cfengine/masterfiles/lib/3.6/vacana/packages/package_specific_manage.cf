@@ -1,0 +1,85 @@
+bundle agent va_package_specific_manage(desired, package, package_version, package_arch, promisee)
+{
+  meta:
+
+    "purpose" string => "Manage a specific package with version and arch";
+    "tags"     slist => { "packages", "vacana" };
+
+  vars:
+    
+    any::
+      
+      "class_prefix"
+        comment => "Prefix for promise outcome classes",
+        string  => canonify("va_package_specific_${desired}_${package}");
+
+    filebased::
+
+      "dir" string => dirname("${package}");
+
+  classes:
+
+    "filebased"
+      comment    => "Check if package is a file on the disk",
+      expression => fileexists("${package}");
+
+    "extracted_package_basename"
+      comment => "Use regex to extract package_basename from path if package
+        is a file. The method in the stdlib doesn't work.",
+      expression => regextract(
+        "([\w\d\-]*)_.*", ${package_name}, "package_basename");
+
+  packages:
+
+    debian.!filebased::
+    
+      "${package}"
+        handle                => "va_package_specific_manage_packages_not_filebased",
+        action                => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes               => classes_generic("${class_prefix}"),
+        package_policy        => "${desired}",
+        package_select        => ">=",
+        package_version       => "${package_version}",
+        package_architectures => { "${package_arch}" },
+        package_method        => apt_get;
+
+    debian.filebased::
+
+      "${package_basename[1]}"
+        handle                => "va_package_specific_manage_packages_filebased",
+        action                => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes               => classes_generic("${class_prefix}"),
+        package_policy        => "${desired}",
+        package_select        => ">=",
+        package_version       => "${package_version}",
+        package_architectures => { "${package_arch}" },
+        package_method        => dpkg_version("${dir}");
+
+    redhat.!filebased::
+    
+      "${package}"
+        handle                => "va_package_specific_manage_packages_not_filebased",
+        action                => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes               => classes_generic("${class_prefix}"),
+        package_policy        => "${desired}",
+        package_select        => ">=",
+        package_version       => "${package_version}",
+        package_architectures => { "${package_arch}" },
+        package_method        => yum_rpm;
+
+    suse::
+    
+      "${package}"
+        handle                => "va_package_specific_manage_packages_not_filebased",
+        action                => va_log_promise(
+          "${this.handle}", "${this.promiser}", "${promisee}"),
+        classes               => classes_generic("${class_prefix}"),
+        package_policy        => "${desired}",
+        package_select        => ">=",
+        package_version       => "${package_version}",
+        package_architectures => { "${package_arch}" },
+        package_method        => zypper;
+}

@@ -1,0 +1,15 @@
+bundle agent va_package_specific_add(package, version, arch, promisee)
+{
+  meta:
+
+    "purpose" string => "Add a specific package to the system";
+    "tags"     slist => { "packages", "vacana" };
+
+  methods:
+
+    "va_package_specific_add"
+      comment   => "Ensure package is in desired state",
+      handle    => "va_package_specific_methods_package_add",
+      usebundle => va_package_specific_manage(
+        "add", "${package}", "${version}", "${arch}", "${promisee}");
+}
