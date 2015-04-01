@@ -29,6 +29,13 @@ bundle common va_c
       string  => "2M";
 }
 
+
+###############################################################################
+#
+# actions
+#
+###############################################################################
+
 # TODO: Add bundle to create log files, if they don't exist, and if they do
 #	remove them.
 
@@ -42,4 +49,46 @@ body action va_log_promise(handle, promiser, promisee)
   log_repaired => "${va_c.promise_log}";
   log_failed   => "${va_c.promise_log}";
   log_string   => "${handle} ;; ${promiser} ;; ${promisee}";
+}
+
+
+###############################################################################
+#
+# classes
+#
+###############################################################################
+
+body classes va_classes_generic(x)
+# @brief  Almost like that stdlib one, but only one class for each possible outcome
+#
+# NOTE: Less classes means less cpu and/or memory consumption and faster
+#       cf-agent execution
+#
+# @param x  Prefix for promise outcome classes
+{
+  promise_repaired  => { "${x}_repaired" };
+  repair_failed     => { "${x}_failed" };
+  repair_denied     => { "${x}_failed" };
+  repair_timeout    => { "${x}_failed" };
+  promise_kept      => { "${x}_kept" };
+}
+
+body classes classes_command(prefix, kept, repaired, failed)
+# @brief  Define promise outcomes with 'prefix' prefixed to _kept|repaired|failed
+#
+# NOTE: Use this for commands promises
+#
+# @param prefix     Prefix for outcome classes
+# @param kept       Command returncode to indicate that promise was kept
+# @param repaired   Command returncode to indicate that promise was repaired
+# @param failed     Command returncode to indicate that promise failed
+{
+  promise_repaired      => { "${prefix}_repaired" };
+  repair_failed         => { "${prefix}_failed" };
+  repair_denied         => { "${prefix}_failed" };
+  repair_timeout        => { "${prefix}_failed" };
+  promise_kept          => { "${prefix}_kept" };
+  kept_returncodes      => { "${kept}" };
+  repaired_returncodes  => { "${repaired}" };
+  failed_returncodes    => { "${failed}" };
 }
