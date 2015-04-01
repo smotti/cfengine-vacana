@@ -22,6 +22,10 @@ bundle common vacana_lib
         "${this.promise_dirname}/packages/package_manage.cf",
         "${this.promise_dirname}/packages/package_specific_add.cf",
         "${this.promise_dirname}/packages/package_specific_manage.cf",
+
+        # Services bundles
+        "${this.promise_dirname}/services/service_start.cf",
+        "${this.promise_dirname}/services/service_manage.cf",
       };
 }
 
