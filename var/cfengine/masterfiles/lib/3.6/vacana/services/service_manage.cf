@@ -1,5 +1,5 @@
 bundle agent va_service_manage(desired, service, promisee)
-# @depends  service_manage
+# @depends  va_log_promise
 # @brief    Ensure that 'service' is put into the 'desired' state
 #
 # @classes  va_service_${desired}_${cservice}_(kept|repaired|failed)
