@@ -1,0 +1,30 @@
+body common control
+{
+  bundlesequence => { "main" };
+}
+
+bundle agent main
+{
+  vars:
+
+    "code[kept]"     slist => { "0", "3" };
+    "code[repaired]" string => "1";
+    "code[failed]"   string => "2";
+
+  methods:
+
+    "test" usebundle => test("main.code");
+
+  reports:
+
+    "KEPT CODE: ${code[kept]}";
+}
+
+bundle agent test(code)
+{
+  reports:
+
+    "KEPT CODE: ${${code}[kept]}";  # Hm why doesn't it work? It's basically the same as above
+    "REPAIRED CODE: ${${code}[repaired]}";
+    "FAILED CODE: ${${code}[failed]}";
+}
