@@ -53,6 +53,13 @@ bundle agent test_va_service_manage
         comment   => "Test bundle va_service_reload",
         handle    => "test_va_service_manage_methods_test_reload",
         usebundle => test_va_service_reload;
+
+    test_all|test_va_service_restart::
+
+      "test_va_service_restart"
+        comment   => "Test bundle va_service_restart",
+        handle    => "test_va_service_manage_methods_test_restart",
+        usebundle => test_va_service_restart;
 }
 
 bundle agent test_va_service_start
@@ -125,6 +132,7 @@ bundle agent test_va_service_stop
 
 bundle agent test_va_service_reload
 {
+# TODO: Check if service is actually running if not start it.
   meta:
 
     "purpose" string => "Test bundle va_service_reload";
@@ -155,4 +163,39 @@ bundle agent test_va_service_reload
 
       "FAIL: test_va_service_reload - Failed to reload service"
         ifvarclass => "va_service_reload_${test_c.cservice}_failed";
+}
+
+bundle agent test_va_service_restart
+{
+# TODO: Check if service is actually running if not start it.
+  meta:
+
+    "purpose" string => "Test bundle va_service_restart";
+    "tags"     slist => { "services", "test", "vacana" };
+
+  vars:
+
+    "promisee" string => "test_va_service_restart";
+
+  classes:
+
+    "test_pass" expression => classmatch(
+      "va_service_restart_${test_c.service}_(kept|repaired)");
+
+  methods:
+
+    "test_va_service_restart"
+      usebundle => va_service_restart("${test_c.service}", "${promisee}");
+
+  reports:
+
+    test_verbose::
+
+      "PASS: test_va_service_restart"
+        ifvarclass => "test_pass";
+
+    any::
+
+      "FAIL: test_va_service_restart - Failed to restart service"
+        ifvarclass => "va_service_restart_${test_c.cservice}_failed";
 }
