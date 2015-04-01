@@ -19,6 +19,7 @@ bundle common test_c
 
     # TODO: Take a look at how it is named on other nix distros and handle that
     #       accordingly with classes.
+    # TODO: Might be better to implement a dummy service.
     "service"  string => "ssh";
     "cservice" string => canonify("${service}");
 }
@@ -38,6 +39,13 @@ bundle agent test_va_service_manage
         comment   => "Test bundle va_service_start",
         handle    => "test_va_service_manage_methods_test_start",
         usebundle => test_va_service_start;
+
+    test_all|test_va_service_stop::
+
+      "test_va_service_stop"
+        comment   => "Test bundle va_service_stop",
+        handle    => "test_va_service_manage_methods_test_stop",
+        usebundle => test_va_service_stop;
 }
 
 bundle agent test_va_service_start
@@ -72,4 +80,38 @@ bundle agent test_va_service_start
 
       "FAIL: test_va_service_start - Failed to start service"
         ifvarclass => "va_service_start_${test_c.cservice}_failed";
+}
+
+bundle agent test_va_service_stop
+{
+  meta:
+
+    "purpose" string => "Test bundle va_service_stop";
+    "tags"     slist => { "services", "test", "vacana" };
+
+  vars:
+
+    "promisee" string => "test_va_service_stop";
+
+  classes:
+
+    "test_pass" expression => classmatch(
+      "va_service_stop_${test_c.service}_(kept|repaired)");
+
+  methods:
+
+    "test_va_service_stop"
+      usebundle => va_service_stop("${test_c.service}", "${promisee}");
+
+  reports:
+
+    test_verbose::
+
+      "PASS: test_va_service_stop"
+        ifvarclass => "test_pass";
+
+    any::
+
+      "FAIL: test_va_service_stop - Failed to stop service"
+        ifvarclass => "va_service_stop_${test_c.cservice}_failed";
 }
