@@ -1,5 +1,5 @@
 bundle agent va_service_start(service, promisee)
-# @depends  service_manage
+# @depends  va_service_manage
 # @brief    Ensure that 'service' is started/running
 #
 # @classes  va_service_start_${cservice}_(kept|repaired|failed)
