@@ -25,7 +25,7 @@ bundle agent va_package_manage(desired, package, promisee)
   packages:
 
     debian::  
-      "${package}"
+      "${package}" -> { "${promisee}" }
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
@@ -35,7 +35,7 @@ bundle agent va_package_manage(desired, package, promisee)
         package_method => apt_get_permissive;
 
     redhat::  
-      "${package}"
+      "${package}" -> { "${promisee}" }
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
@@ -45,7 +45,7 @@ bundle agent va_package_manage(desired, package, promisee)
         package_method => yum_rpm_permissive;
 
     suse::  
-      "${package}"
+      "${package}" -> { "${promisee}" }
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
@@ -55,7 +55,7 @@ bundle agent va_package_manage(desired, package, promisee)
         package_method => zypper;
 
     !debian.!redhat.!suse::  
-      "${package}"
+      "${package}" -> { "${promisee}" }
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_add",
         action         => va_log_promise(

@@ -25,7 +25,7 @@ bundle agent va_service_manage(desired, service, promisee)
 
   services:
 
-    "${service}"
+    "${service}" -> { "${promisee}" }
       comment        => "Ensure state ${desired} for ${service}",
       handle         => "va_service_manage_services_ensure_state",
       action         => va_log_promise(
