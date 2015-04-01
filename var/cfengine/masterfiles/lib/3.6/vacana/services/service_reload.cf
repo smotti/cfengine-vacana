@@ -19,5 +19,5 @@ bundle agent va_service_reload(service, promisee)
     "va_service_reload"
       comment   => "Reload ${service}",
       handle    => "va_service_reload_methods_manage",
-      usebundle => va_service_manage("reload", "${service}", "${this.promiser}");
+      usebundle => va_service_manage("reload", "${service}", "${promisee}");
 }

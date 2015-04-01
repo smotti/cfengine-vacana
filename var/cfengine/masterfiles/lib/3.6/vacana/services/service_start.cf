@@ -20,5 +20,5 @@ bundle agent va_service_start(service, promisee)
     "va_service_start"
       comment   => "Start ${service}",
       handle    => "va_service_start_methods_manage",
-      usebundle => va_service_manage("start", "${service}", "${this.promiser}");
+      usebundle => va_service_manage("start", "${service}", "${promisee}");
 }
