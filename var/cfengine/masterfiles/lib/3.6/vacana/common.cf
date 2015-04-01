@@ -27,21 +27,6 @@ bundle common va_c
     "max_bytes"
       comment => "Maximum number of bytes to read from a file",
       string  => "2M";
-
-    "inputs"
-      comment => "Convenient variable to include the whole lib easily",
-      slist => { 
-	      "${this.promise_dirname}/promises_reports.cf",
-	      "${this.promise_dirname}/files/file_copy_local.cf",
-        "${this.promise_dirname}/files/file_copy_remote.cf",
-	      "${this.promise_dirname}/files/file_remove.cf",
-      };
-
-    "test_inputs"
-      comment => "Convenient variable to include testing bundles",
-      slist   => {
-	      "${this.promise_dirname}/files/tests/file_copy_local.cf",
-      };
 }
 
 # TODO: Add bundle to create log files, if they don't exist, and if they do
