@@ -25,6 +25,7 @@ bundle common vacana_lib
 
         # Services bundles
         "${this.promise_dirname}/services/service_manage.cf",
+        "${this.promise_dirname}/services/service_reload.cf",
         "${this.promise_dirname}/services/service_start.cf",
         "${this.promise_dirname}/services/service_stop.cf",
       };

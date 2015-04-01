@@ -46,6 +46,13 @@ bundle agent test_va_service_manage
         comment   => "Test bundle va_service_stop",
         handle    => "test_va_service_manage_methods_test_stop",
         usebundle => test_va_service_stop;
+
+    test_all|test_va_service_reload::
+
+      "test_va_service_reload"
+        comment   => "Test bundle va_service_reload",
+        handle    => "test_va_service_manage_methods_test_reload",
+        usebundle => test_va_service_reload;
 }
 
 bundle agent test_va_service_start
@@ -114,4 +121,38 @@ bundle agent test_va_service_stop
 
       "FAIL: test_va_service_stop - Failed to stop service"
         ifvarclass => "va_service_stop_${test_c.cservice}_failed";
+}
+
+bundle agent test_va_service_reload
+{
+  meta:
+
+    "purpose" string => "Test bundle va_service_reload";
+    "tags"     slist => { "services", "test", "vacana" };
+
+  vars:
+
+    "promisee" string => "test_va_service_reload";
+
+  classes:
+
+    "test_pass" expression => classmatch(
+      "va_service_reload_${test_c.service}_(kept|repaired)");
+
+  methods:
+
+    "test_va_service_reload"
+      usebundle => va_service_reload("${test_c.service}", "${promisee}");
+
+  reports:
+
+    test_verbose::
+
+      "PASS: test_va_service_reload"
+        ifvarclass => "test_pass";
+
+    any::
+
+      "FAIL: test_va_service_reload - Failed to reload service"
+        ifvarclass => "va_service_reload_${test_c.cservice}_failed";
 }
