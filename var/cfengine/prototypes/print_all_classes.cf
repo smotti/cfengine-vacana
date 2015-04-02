@@ -1,0 +1,15 @@
+body common control
+{
+  bundlesequence => { "print_all_classes" };
+}
+
+bundle agent print_all_classes
+{
+  vars:
+
+    "all" slist => classesmatching(".*");
+
+  reports:
+
+    "${all}";
+}
