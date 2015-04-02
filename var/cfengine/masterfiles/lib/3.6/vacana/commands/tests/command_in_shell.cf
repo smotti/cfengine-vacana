@@ -24,7 +24,6 @@ bundle agent test_va_command_in_shell
     "promisee"  string => "test_va_command_in_shell";
 
     "ccommand"   string => canonify("${command}");
-    "ctest_file" string => canonify("${test_file}");
 
   classes:
 
@@ -42,7 +41,7 @@ bundle agent test_va_command_in_shell
 
     test_verbose::
 
-      "PASS: test_va_command_in_shell_run"
+      "PASS: test_va_command_in_shell"
         ifvarclass => "test_pass";
 
     any::
