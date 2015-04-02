@@ -1,0 +1,54 @@
+bundle agent va_command_in_shell_and_silent(command, codes, promisee)
+# @depends  va_log_promise
+# @brief    Execute 'command' within a shell and suppresing its output
+#
+# @classes  va_command_in_shell_and_silent_${ccommand}_(kept|repaired|failed)
+#
+# NOTE: ccommand is canonify("${command}")
+#
+# @param command    Command to execute
+# @param codes      A data var that provide returncodes for kept, repaired and
+#                   failed promise outcome
+#                   Example: 
+#                     vars:
+#                       "codes" data => parsejson(
+#                         '{ "kept": "0", "repaired": "1", "failed": "2" }'
+#                       );
+#
+#                     methods:
+#                       "execute command"
+#                         usebundle => va_command_execute(
+#                          "/bin/echo hello",
+#                          "false",
+#                          "in_shell",
+#                          "@{codes}",
+#                          "my_bundle_name");
+#                     
+# @param promisee   A promisee for this promise
+{
+  meta:
+
+    "purpose" string => "Execute given command in default shell silently";
+    "tags"     slist => { "commands", "vacana" };
+
+  vars:
+
+    "class_prefix"
+      comment => "Prefix for promise outcome classes",
+      string  => canonify("va_command_in_shell_and_silent_${command}");
+
+  commands:
+
+    "${command}" -> { "${promisee}" }
+      comment => "Execute ${command}",
+      handle  => "va_command_in_shell_and_silent_commands_execute",
+      action  => va_log_promise(
+        "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes => va_classes_command(
+        "${class_prefix}",
+        "${codes[kept]}",
+        "${codes[repaired]}",
+        "${codes[failed]}"),
+      module  => "false",
+      contain => in_shell_and_silent;
+}
