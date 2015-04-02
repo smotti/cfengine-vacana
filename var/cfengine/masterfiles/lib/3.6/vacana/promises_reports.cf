@@ -87,9 +87,10 @@ bundle agent va_promises_report
       comment => "Fields in promises.log",
       data    => parsejson(
 	      '{
-	          "0": "handle",
-	          "1": "promiser",
-	          "2": "promisee"
+            "0": "class",
+	          "1": "handle",
+	          "2": "promiser",
+	          "3": "promisee"
 	      }'
       );
 
@@ -117,25 +118,21 @@ bundle agent va_promises_report
       comment => "Make final data set",
       string  => "${promises[${i}][${p}]}";
 
-    "cp[${i}]"
-      comment => "Canonify promiser",
-      string  => canonify("${d[${i}][promiser]}");
-
   reports:
     
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
       comment        => "If promise of promiser was kept",
-      ifvarclass     => "${cp[${i}]}_kept";
+      ifvarclass     => "${d[${i}][class]}_kept";
 #      report_to_file => "${va_c.outcome_log}";
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
       comment        => "If promise of promiser was repaired",
-      ifvarclass     => "${cp[${i}]}_repaired";
+      ifvarclass     => "${d[${i}[class]}_repaired";
 #      report_to_file => "${va_c.outcome_log}";
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
       comment        => "If promise of promiser was failed",
-      ifvarclass     => "${cp[${i}]}_failed";
+      ifvarclass     => "${d[${i}[class]}_failed";
 #      report_to_file => "${va_c.outcome_log}";
 }
 
