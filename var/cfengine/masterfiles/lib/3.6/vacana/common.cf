@@ -21,7 +21,7 @@ bundle common va_c
 
     "classes_log"
       comment => "File to log defined classes to",
-      string  => "${va_logs}/classes.log"
+      string  => "${va_logs}/classes.log";
 
     "client_logs"
       comment => "Directory where to put the client logs on the policy hub",

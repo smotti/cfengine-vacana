@@ -61,6 +61,7 @@ bundle agent va_pre_promises_report
         create  => "true";
 }
 
+
 ###############################################################################
 #
 # va_promises_report
@@ -136,4 +137,85 @@ bundle agent va_promises_report
       comment        => "If promise of promiser was failed",
       ifvarclass     => "${cp[${i}]}_failed",
       report_to_file => "${va_c.outcome_log}";
+}
+
+
+###############################################################################
+#
+# va_post_promises_report
+#
+###############################################################################
+
+bundle agent va_post_promises_report
+{
+  methods:
+
+    any::
+
+      "generate promises report"
+        usebundle => va_promises_report;
+
+    am_policy_hub::
+
+      "fetch report from clients"
+        usebundle => va_get_client_promises_report;
+}
+
+###############################################################################
+#
+# va_get_client_promises_report
+#
+# - Fetch promises reports from clients
+#
+###############################################################################
+
+bundle agent va_get_client_promises_report
+{
+  meta:
+
+    "purpose" string => "Fetch promise outcome log from lastseen clients";
+    "tags"     slist => { "report", "vacana" };
+
+  vars:
+
+    am_policy_hub::
+
+      "client_logs"
+        comment => "Path to where the client logs will be stored",
+        handle  => "va_get_client_promises_report_vars_client_logs",
+        string  => "${va_c.client_logs}";
+
+      "lastseen"
+        comment => "List of lastseen clients during the last hour",
+        handle  => "va_get_client_promises_report_vars_lastseen",
+        slist   => {
+          hostsseen("1", "lastseen", "address"),
+          "${sys.policy_hub}" };
+
+  methods:
+
+    am_policy_hub::
+    
+      "get_promises_reports"
+        comment   => "Fetch logs in the background",
+        action    => bg("5", "5"),
+        usebundle => bg_get_client_promises_report(
+          "${client_logs}", "${lastseen}");
+}
+
+bundle agent bg_get_client_promises_report(dir, client)
+{
+  files:
+
+    "${dir}/${lastseen}-outcome.log" -> { "vacana" }
+      comment   => "Download client promise outcome log",
+      handle    => "va_bg_get_client_promises_report_outcome_log",
+      perms     => m("600"),
+      copy_from => secure_cp("${va_c.outcome_log}", "${client}");
+
+    "${dir}/${lastseen}-classes.log" -> { "vacana" }
+      comment   => "Download client classes log",
+      handle    => "va_bg_get_client_promises_report_classes_log",
+      perms     => m("600"),
+      copy_from => secure_cp("${va_c.classes_log}", "${client}");
 }

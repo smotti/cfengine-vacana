@@ -18,6 +18,7 @@ body common control
 
     # Our custom stuff
     "inventory/inventory.cf",
+    "lib/3.6/vacana/lib.cf",
   };
 
   bundlesequence => { 
@@ -27,8 +28,14 @@ body common control
     # CFE internals
     cfe_internal_management,
 
+    # Vacana prerequisits
+    va_pre_promises_report,
+
     # Host inventory
     host_info_report,
     inventory_client_get,
+
+    # Vacana postrequisits
+    va_post_promises_report,
   };
 }
