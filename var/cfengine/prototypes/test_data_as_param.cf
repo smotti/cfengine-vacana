@@ -1,0 +1,28 @@
+body common control
+{
+  bundlesequence => { "main" };
+}
+
+bundle agent main
+{
+  vars:
+
+    "code" data => parsejson(
+      '{
+          "kept": "0", "repaired": "1", "failed": "2"
+      }'
+    );
+
+  methods:
+
+    "test" usebundle => test("@{code}");
+}
+
+bundle agent test(code)
+{
+  reports:
+
+    "KEPT CODE: ${code[kept]}";
+    "REPAIRED CODE: ${code[repaired]}";
+    "FAILED CODE: ${code[failed]}";
+}
