@@ -48,6 +48,11 @@ bundle server access_rules()
         handle    => "server_access_grant_access_reports",
         admit_ips => { @{def.acl} };
 
+      "${def.dir_vacana}"
+        comment   => "Grant access to vacana logs/reports",
+        handle    => "server_access_grant_access_vacana",
+        admit_ips => { @{def.acl} };
+
       "${def.cf_runagent_shell}"
         comment   => "Grant access to shell for cfruncommand",
         handle    => "server_access_grant_access_shell",
