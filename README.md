@@ -20,3 +20,25 @@ This library can be used with the vacana dashboard.
 * Policies written in CFEs declarative language allow for better documentation
 * Lack of a good lightweight and simple to setup dashboard (see vacana
   dashboard for a solution)
+
+---
+
+# Try it
+
+You might try it via vagrant. For that you'll need ansible (I'll probably
+change that also to the cfengine provisioner), because that's how the
+vagrant VM's a provisioned at the moment.
+On Debian-based distros:
+
+    :::bash
+    apt-get --no-install-recommends --install ansible
+    vagrant up hub node
+
+---
+
+# TODO
+
+* Quickstart guide
+* Tutorials
+* Reference
+* More bundles
