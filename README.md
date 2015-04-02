@@ -20,6 +20,9 @@ This library can be used with the vacana dashboard.
 * Policies written in CFEs declarative language allow for better documentation
 * Lack of a good lightweight and simple to setup dashboard (see vacana
   dashboard for a solution)
+* Default masterfiles are bloated with enterprise stuff
+* Make it easier for beginners
+* Make it more DevOps friendly
 
 ---
 
@@ -50,3 +53,12 @@ your cfengine installation resides.
 * Tutorials
 * Reference
 * More bundles
+
+---
+
+# Credits
+
+* To neilhwatson for cf-manifest, the update.cf policy and ideas
+* The guys at Normation (its worth checking out their Rudder-Project)
+* And of course to the folks at CFEngine AS and the guys supporting the
+  CFEngine Community Edition
