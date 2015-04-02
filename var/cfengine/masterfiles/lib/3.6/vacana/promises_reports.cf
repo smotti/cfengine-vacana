@@ -53,6 +53,11 @@ bundle agent va_pre_promises_report
         handle  => "va_pre_promises_report_files_delete_outcome_log",
         delete  => tidy;
 
+      "${va_c.classes_log}" -> { "vacana" }
+        comment => "Delete old ${va_c.classes_log}",
+        handle  => "va_pre_promises_report_files_delete_classes_log",
+        delete  => tidy;
+
     am_policy_hub.!dir_for_client_logs_exists::
 
       "${va_c.client_logs}/." -> { "vacana" }
@@ -120,6 +125,11 @@ bundle agent va_promises_report
     "all_classes"
       comment => "Get a list of all defined classes",
       slist   => classesmatching(".*");
+
+  files:
+
+    "${va_c.promise_log}"
+      delete => tidy;
 
   reports:
 
