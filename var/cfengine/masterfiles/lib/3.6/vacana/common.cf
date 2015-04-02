@@ -73,7 +73,7 @@ body classes va_classes_generic(x)
   promise_kept      => { "${x}_kept" };
 }
 
-body classes classes_command(prefix, kept, repaired, failed)
+body classes va_classes_command(prefix, kept, repaired, failed)
 # @brief  Define promise outcomes with 'prefix' prefixed to _kept|repaired|failed
 #
 # NOTE: Use this for commands promises
