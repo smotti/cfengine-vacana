@@ -36,6 +36,14 @@ On Debian-based distros:
 
 ---
 
+# Install
+
+Just copy the masterfiles and modules folder to /var/cfengine or to where
+your cfengine installation resides.
+**Take care though, this might overwrite your other masterfiles.**
+
+---
+
 # TODO
 
 * Quickstart guide
