@@ -11,10 +11,13 @@ bundle common va_c
       comment => "File to log promises to without their outcome",
       string  => "/var/cfengine/vacana/promises.log";
 
-
     "outcome_log"
       comment => "File to log promises with their outcome, used by promises_outcome bundle",
       string  => "/var/cfengine/vacana/promises_outcome.log";
+
+    "client_logs"
+      comment => "Directory where to put the client logs on the policy hub",
+      string  => "/var/cfengine/vacana/clients";
 
     "log_delim"
       comment => "Delimiter used in promise logs",
