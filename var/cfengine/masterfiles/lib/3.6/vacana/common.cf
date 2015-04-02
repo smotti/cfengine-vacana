@@ -56,6 +56,8 @@ body action va_log_promise(class_prefix, promiser, promisee)
 # @param  promiser  Promiser of the promise
 # @param  promisee  Who makes the promise
 {
+  ifelapsed => "1";
+
   log_kept     => "${va_c.promise_log}";
   log_repaired => "${va_c.promise_log}";
   log_failed   => "${va_c.promise_log}";
