@@ -87,10 +87,9 @@ bundle agent va_promises_report
       comment => "Fields in promises.log",
       data    => parsejson(
 	      '{
-            "0": "class",
-	          "1": "handle",
-	          "2": "promiser",
-	          "3": "promisee"
+            "0": "prefix",
+	          "1": "promiser",
+	          "2": "promisee"
 	      }'
       );
 
@@ -99,10 +98,10 @@ bundle agent va_promises_report
       slist   => getindices("params");
 
     "read"
-      comment => "Read ${va_c.promises_log} into an array",
+      comment => "Read ${va_c.promise_log} into an array",
       int => readstringarrayidx(
 	      "promises",
-	      "${va_c.promises_log}",
+	      "${va_c.promise_log}",
 	      "",
 	      "${va_c.log_delim}",
 	      "${va_c.max_num}",
@@ -118,22 +117,29 @@ bundle agent va_promises_report
       comment => "Make final data set",
       string  => "${promises[${i}][${p}]}";
 
+    "all_classes"
+      comment => "Get a list of all defined classes",
+      slist   => classesmatching(".*");
+
   reports:
-    
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
+
+    "${all_classes}"
+      report_to_file => "${va_c.classes_log}";
+
+    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
       comment        => "If promise of promiser was kept",
-      ifvarclass     => "${d[${i}][class]}_kept";
-#      report_to_file => "${va_c.outcome_log}";
+      ifvarclass     => "${d[${i}][prefix]}_kept",
+      report_to_file => "${va_c.outcome_log}";
 
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
+    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
       comment        => "If promise of promiser was repaired",
-      ifvarclass     => "${d[${i}][class]}_repaired";
-#      report_to_file => "${va_c.outcome_log}";
+      ifvarclass     => "${d[${i}][prefix]}_repaired",
+      report_to_file => "${va_c.outcome_log}";
 
-    "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
+    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
       comment        => "If promise of promiser was failed",
-      ifvarclass     => "${d[${i}][class]}_failed";
-#      report_to_file => "${va_c.outcome_log}";
+      ifvarclass     => "${d[${i}][prefix]}_failed",
+      report_to_file => "${va_c.outcome_log}";
 }
 
 
@@ -204,13 +210,13 @@ bundle agent bg_get_client_promises_report(dir, client)
 {
   files:
 
-    "${dir}/${lastseen}-outcome.log" -> { "vacana" }
+    "${dir}/${client}-outcome.log" -> { "vacana" }
       comment   => "Download client promise outcome log",
       handle    => "va_bg_get_client_promises_report_outcome_log",
       perms     => m("600"),
       copy_from => secure_cp("${va_c.outcome_log}", "${client}");
 
-    "${dir}/${lastseen}-classes.log" -> { "vacana" }
+    "${dir}/${client}-classes.log" -> { "vacana" }
       comment   => "Download client classes log",
       handle    => "va_bg_get_client_promises_report_classes_log",
       perms     => m("600"),
