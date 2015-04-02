@@ -1,9 +1,13 @@
 # Description
 
-A CFEngine framework that come with a comprehensive set of predefined methods
-and integrated reporting (central reporting).
-It also come with a web frontend to list available hosts, inventories and
-promise outcomes.
+A lightweight set of CFEngine masterfiles with the vacana library, which
+provides logging and a comprehensive set of predefined bundles for the most
+common administrativ tasks.
+
+Also note that this library is focused on the latest CFEngine Community
+version (currently 3.6.5).
+
+This library can be used with the vacana dashboard.
 
 ---
 
@@ -14,19 +18,5 @@ promise outcomes.
     * But provide the bundles that NCF and EFL have
 * EFL data driven approach is great but not flexible enough
 * Policies written in CFEs declarative language allow for better documentation
-* Lack of a good lightweigth and simple to setup dashboard
-
----
-
-# What
-
-* Include (CFE masterfiles)
-    * custom controls (agent, server, ...)
-    * custom update.cf (modified version of EFL one)
-    * custom cfe_internals
-	* Log rotation
-	* Remove reports
-    * common task bundles (see NCF and EFL)
-	* With reporting
-    * host info report
-    * services autorun
+* Lack of a good lightweight and simple to setup dashboard (see vacana
+  dashboard for a solution)
