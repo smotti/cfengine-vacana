@@ -19,6 +19,7 @@ body common control
     # Our custom stuff
     "inventory/inventory.cf",
     "lib/3.6/vacana/lib.cf",
+    "test.cf",
   };
 
   bundlesequence => { 
@@ -30,6 +31,9 @@ body common control
 
     # Vacana prerequisits
     va_pre_promises_report,
+
+    # PUT YOUR BUNDLES HERE
+#    test_va_logging,
 
     # Host inventory
     host_info_report,

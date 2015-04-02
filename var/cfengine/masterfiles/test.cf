@@ -1,0 +1,17 @@
+bundle agent test_va_logging
+{
+  meta:
+
+    "purpose" string => "Test promise report bundles of vacana lib";
+    "tags"     slist => { "test", "vacana" };
+
+  vars:
+
+    "test_file" string => "/tmp/hello_vacana";
+    "promisee"  string => "test_va_logging";
+
+  methods:
+
+    "copy file" usebundle => va_file_copy_local(
+      "${sys.inputdir}/promises.cf", "${test_file}", "${promisee}");
+}
