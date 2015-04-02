@@ -9,20 +9,25 @@ bundle agent main
 
     "code" data => parsejson(
       '{
-          "kept": "0", "repaired": "1", "failed": "2"
+          "kept": ["0", "1"], "repaired": "1", "failed": "2"
       }'
     );
 
   methods:
 
     "test" usebundle => test("@{code}");
+
 }
 
 bundle agent test(code)
 {
+  vars:
+
+    "kept" slist => { "4", getvalues("code[kept]") };
+
   reports:
 
-    "KEPT CODE: ${code[kept]}";
+    "KEPT CODE: ${kept}";
     "REPAIRED CODE: ${code[repaired]}";
     "FAILED CODE: ${code[failed]}";
 }
