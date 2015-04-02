@@ -127,12 +127,12 @@ bundle agent va_promises_report
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
       comment        => "If promise of promiser was repaired",
-      ifvarclass     => "${d[${i}[class]}_repaired";
+      ifvarclass     => "${d[${i}][class]}_repaired";
 #      report_to_file => "${va_c.outcome_log}";
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
       comment        => "If promise of promiser was failed",
-      ifvarclass     => "${d[${i}[class]}_failed";
+      ifvarclass     => "${d[${i}][class]}_failed";
 #      report_to_file => "${va_c.outcome_log}";
 }
 
