@@ -1,5 +1,5 @@
 bundle agent va_service_manage(desired, service, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_generic
 # @brief    Ensure that 'service' is put into the 'desired' state
 #
 # @classes  va_service_${desired}_${cservice}_(kept|repaired|failed)
@@ -29,7 +29,7 @@ bundle agent va_service_manage(desired, service, promisee)
       comment        => "Ensure state ${desired} for ${service}",
       handle         => "va_service_manage_services_ensure_state",
       action         => va_log_promise(
-        "${this.handle}", "${this.promiser}", "${promisee}"),
-      classes        => classes_generic("${class_prefix}"),
+        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes        => va_classes_generic("${class_prefix}"),
       service_policy => "${desired}";
 }
