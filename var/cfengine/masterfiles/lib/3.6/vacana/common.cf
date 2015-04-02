@@ -19,6 +19,10 @@ bundle common va_c
       comment => "File to log promises with their outcome, used by promises_outcome bundle",
       string  => "${va_logs}/promises_outcome.log";
 
+    "classes_log"
+      comment => "File to log defined classes to",
+      string  => "${va_logs}/classes.log"
+
     "client_logs"
       comment => "Directory where to put the client logs on the policy hub",
       string  => "${va_logs}/clients";
