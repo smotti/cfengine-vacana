@@ -29,7 +29,7 @@ bundle agent va_package_manage(desired, package, promisee)
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
-          "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+          "${class_prefix}", "${this.promiser}", "${promisee}"),
         classes        => classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => apt_get_permissive;
@@ -39,7 +39,7 @@ bundle agent va_package_manage(desired, package, promisee)
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
-          "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+          "${class_prefix}", "${this.promiser}", "${promisee}"),
         classes        => classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => yum_rpm_permissive;
@@ -49,7 +49,7 @@ bundle agent va_package_manage(desired, package, promisee)
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
-          "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+          "${class_prefix}", "${this.promiser}", "${promisee}"),
         classes        => classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => zypper;
@@ -59,7 +59,7 @@ bundle agent va_package_manage(desired, package, promisee)
         comment        => "${desired} ${package} via package manager",
         handle         => "va_package_add_packages_add",
         action         => va_log_promise(
-          "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+          "${class_prefix}", "${this.promiser}", "${promisee}"),
         classes        => classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => generic;

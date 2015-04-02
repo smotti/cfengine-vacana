@@ -26,7 +26,7 @@ bundle agent va_file_remove(file, promisee)
       comment => "Remove file ${file}",
       handle  => "va_file_remove_files_remove",
       action  => va_log_promise(
-        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.promiser}", "${promisee}"),
       classes => va_classes_generic("${class_prefix}"),
       delete  => tidy;
 }

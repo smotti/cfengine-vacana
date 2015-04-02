@@ -26,7 +26,7 @@ bundle agent va_file_create(file, promisee)
       comment => "Create file ${file} on the system",
       handle  => "va_file_create_files_create_file",
       action  => va_log_promise(
-        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.promiser}", "${promisee}"),
       classes => va_classes_generic("${class_prefix}"),
       create  => "true";
 }

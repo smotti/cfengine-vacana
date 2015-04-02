@@ -29,7 +29,7 @@ bundle agent va_service_manage(desired, service, promisee)
       comment        => "Ensure state ${desired} for ${service}",
       handle         => "va_service_manage_services_ensure_state",
       action         => va_log_promise(
-        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.promiser}", "${promisee}"),
       classes        => va_classes_generic("${class_prefix}"),
       service_policy => "${desired}";
 }
