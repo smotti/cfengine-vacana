@@ -1,8 +1,77 @@
+###############################################################################
+#
+# va_pre_promises_report
+#
+# - Checks if required directories exit
+# - Performs some cleanup of old files
+#
+###############################################################################
+
+bundle agent va_pre_promises_report
+{
+  meta:
+
+    "purpose" string => "Prerequisites for promises_report";
+    "tags"     slist => { "report", "vacana" };
+
+  classes:
+
+    any::
+
+      "dir_vacana_exists" and => {
+        fileexists("${va_c.va_logs}"),
+        isdir("${va_c.va_logs}")
+      };
+      "promise_log_exists" expression => fileexists("${va_c.promise_log}");
+      "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
+
+    am_policy_hub::
+
+      "dir_for_client_logs_exists" and => {
+        fileexists("${va_c.client_logs}"),
+        isdir("${va_c.client_logs}")
+      };
+
+  files:
+
+    any.!dir_vacana_exists::
+
+      "${va_c.va_logs}/." -> { "vacana" }
+        comment  => "Create directory ${va_c.va_logs} for vacana logs/reports",
+        handle   => "va_pre_promises_report_files_create_va_logs",
+        create   => "true";
+
+    any.dir_vacana_exists::
+
+      "${va_c.promise_log}" -> { "vacana" }
+        comment => "Delete old ${va_c.promise_log}",
+        handle  => "va_pre_promises_report_files_delete_promise_log",
+        delete  => tidy;
+
+      "${va_c.outcome_log}" -> { "vacana" }
+        comment => "Delete old ${va_c.outcome_log}",
+        handle  => "va_pre_promises_report_files_delete_outcome_log",
+        delete  => tidy;
+
+    am_policy_hub.!dir_for_client_logs_exists::
+
+      "${va_c.client_logs}/." -> { "vacana" }
+        comment => "Create directory ${va_c.client_logs} to store logs from nodes",
+        handle  => "va_pre_promises_report_files_create_client_logs",
+        create  => "true";
+}
+
+###############################################################################
+#
+# va_promises_report
+#
 # - Read promises.log, separator is ';;'
 # - Canonify promiser
 # - Use reports promise type to report to file
 # - Use reports promise type to loop over promisers with ifvarclass to check
 #   outcome and report accordingly
+#
+###############################################################################
 
 bundle agent va_promises_report
 {
@@ -10,17 +79,17 @@ bundle agent va_promises_report
     
     "purpose" string => "Read promises.log parse it, check outcome of promise
       and write result to promises_outcome.log";
-    "tags" slist     => { "vacana" };
+    "tags" slist     => { "report", "vacana" };
 
   vars:
     "params"
       comment => "Fields in promises.log",
       data    => parsejson(
-	'{
-	    "0": "handle",
-	    "1": "promiser",
-	    "2": "promisee"
-	  }'
+	      '{
+	          "0": "handle",
+	          "1": "promiser",
+	          "2": "promisee"
+	      }'
       );
 
     "p"
@@ -30,12 +99,12 @@ bundle agent va_promises_report
     "read"
       comment => "Read ${va_c.promises_log} into an array",
       int => readstringarrayidx(
-	"promises",
-	"${va_c.promises_log}",
-	"",
-	"${va_c.log_delim}",
-	"${va_c.max_num}",
-	"${va_c.max_bytes}"
+	      "promises",
+	      "${va_c.promises_log}",
+	      "",
+	      "${va_c.log_delim}",
+	      "${va_c.max_num}",
+	      "${va_c.max_bytes}"
       );
 
     "i"
@@ -54,14 +123,17 @@ bundle agent va_promises_report
   reports:
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
-      comment    => "If promise of promiser was kept",
-      ifvarclass => "${cp[${i}]}_kept";
+      comment        => "If promise of promiser was kept",
+      ifvarclass     => "${cp[${i}]}_kept",
+      report_to_file => "${va_c.outcome_log}";
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
-      comment    => "If promise of promiser was repaired",
-      ifvarclass => "${cp[${i}]}_repaired";
+      comment        => "If promise of promiser was repaired",
+      ifvarclass     => "${cp[${i}]}_repaired",
+      report_to_file => "${va_c.outcome_log}";
 
     "${d[${i}][handle]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
-      comment    => "If promise of promiser was failed",
-      ifvarclass => "${cp[${i}]}_failed";
+      comment        => "If promise of promiser was failed",
+      ifvarclass     => "${cp[${i}]}_failed",
+      report_to_file => "${va_c.outcome_log}";
 }

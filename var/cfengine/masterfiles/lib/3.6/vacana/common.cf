@@ -6,18 +6,22 @@ bundle common va_c
     "tags" slist     => { "common", "vacana" };
 
   vars:
+
+    "va_logs"
+      comment => "Directory where reports/logs are stored, that are created by vacana",
+      string  => "/var/cfengine/vacana";
     
     "promise_log"
       comment => "File to log promises to without their outcome",
-      string  => "/var/cfengine/vacana/promises.log";
+      string  => "${va_logs}/promises.log";
 
     "outcome_log"
       comment => "File to log promises with their outcome, used by promises_outcome bundle",
-      string  => "/var/cfengine/vacana/promises_outcome.log";
+      string  => "${va_logs}/promises_outcome.log";
 
     "client_logs"
       comment => "Directory where to put the client logs on the policy hub",
-      string  => "/var/cfengine/vacana/clients";
+      string  => "${va_logs}/clients";
 
     "log_delim"
       comment => "Delimiter used in promise logs",
