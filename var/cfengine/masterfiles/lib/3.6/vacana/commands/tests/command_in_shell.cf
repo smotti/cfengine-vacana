@@ -17,8 +17,7 @@ bundle agent test_va_command_in_shell
 
   vars:
 
-    "test_file" string => "/tmp/hello";
-    "command"   string => "/bin/echo hello > ${test_file}";
+    "command"   string => "/bin/echo hello";
     "codes"       data => parsejson(
       '{ "kept": "0", "repaired": "0", "failed": "1" }'
     );
@@ -29,10 +28,8 @@ bundle agent test_va_command_in_shell
 
   classes:
 
-    "test_pass" and => {
-      classmatch("va_command_in_shell_${ccommand}_(kept|repaired)"),
-      "va_file_remove_${ctest_file}_repaired"
-    };
+    "test_pass" expression => classmatch(
+      "va_command_in_shell_${ccommand}_(kept|repaired)");
 
   methods:
 
@@ -40,11 +37,6 @@ bundle agent test_va_command_in_shell
       comment   => "Call bundle for test",
       handle    => "test_va_command_in_shell_methods_run_bundle",
       usebundle => va_command_in_shell("${command}", "@{codes}", "${promisee}");
-
-    "test_va_command_in_shell_cleanup"
-      comment   => "Cleanup artifacts created by test",
-      handle    => "test_va_command_in_shell_methods_cleanup",
-      usebundle => va_file_remove("${test_file}", "${promisee}");
 
   reports:
 
@@ -57,7 +49,4 @@ bundle agent test_va_command_in_shell
 
       "FAIL: test_va_command_in_shell - commands promise failed"
         ifvarclass => "va_command_in_shell_${ccommand}_failed";
-
-      "FAIL: test_va_command_in_shell - Failed to cleanup"
-        ifvarclass => "va_file_remove_${ctest_file}_failed";
 }
