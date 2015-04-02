@@ -1,5 +1,5 @@
 bundle agent va_file_copy_local(src, dest, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_generic
 # @brief    Copy 'src' to 'dest' on local host
 #
 # @classes  va_file_copy_local_${cdest}_(kept|repaired|failed)
@@ -27,7 +27,7 @@ bundle agent va_file_copy_local(src, dest, promisee)
       comment   => "Copy ${src} to ${dest}",
       handle    => "va_file_copy_local_files_copy",
       action    => va_log_promise(
-	"${this.handle}", "${this.promiser}", "${promisee}"),
-      classes   => classes_generic("${class_prefix}"),
+	      "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes   => va_classes_generic("${class_prefix}"),
       copy_from => local_dcp("${src}");
 }

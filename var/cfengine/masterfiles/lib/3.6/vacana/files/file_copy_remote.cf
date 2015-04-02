@@ -1,5 +1,5 @@
 bundle agent va_file_copy_remote(src, server, dest, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_generic
 # @brief    Copy 'src' from remote 'server' to local 'dest'
 #
 # @classes  va_file_copy_remote_${cdest}_(kept|repaired|failed)
@@ -28,7 +28,7 @@ bundle agent va_file_copy_remote(src, server, dest, promisee)
       comment   => "Copy ${src} from ${server} to local ${dest}",
       handle    => "va_file_copy_remote_files_copy",
       action    => va_log_promise(
-        "${this.handle}", "${this.promiser}", "${promisee}"),
-      classes   => classes_generic("${class_prefix}"),
+        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
+      classes   => va_classes_generic("${class_prefix}"),
       copy_from => secure_cp("${src}", "${server}");
 }

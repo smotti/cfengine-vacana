@@ -43,7 +43,7 @@ bundle agent va_command_in_shell_and_silent(command, codes, promisee)
       comment => "Execute ${command}",
       handle  => "va_command_in_shell_and_silent_commands_execute",
       action  => va_log_promise(
-        "${this.handle}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
       classes => va_classes_command(
         "${class_prefix}",
         "${codes[kept]}",
