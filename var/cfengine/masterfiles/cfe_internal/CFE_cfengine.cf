@@ -15,6 +15,11 @@ bundle agent cfe_internal_management
         comment   => "Rotate CFEngine logs so we dont fill the disk",
         handle    => "cfe_internal_management_log_rotation",
         usebundle => cfe_internal_log_rotation;
+
+      "any"
+        comment   => "Limit processes of some daemons",
+        handle    => "cfe_internal_management_limit_agents",
+        usebundle => cfe_internal_limit_robot_agents;
 }
 
 ###############################################################################
