@@ -42,7 +42,7 @@ vagrant up hub node
 ```
 
 For examples on how to use the vacana bundles take a look at the test bundles
-in var/cfengine/masterfiles/lib/3.6/vacana/<promise_type>/tests.
+in var/cfengine/masterfiles/lib/3.6/vacana/promise_type/tests.
 If you want to know what a bundle does take a look at its definition, each
 one comes with a short description of what it does, what the parameters are
 and what classes it defines.
