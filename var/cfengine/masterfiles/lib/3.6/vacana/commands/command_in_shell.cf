@@ -1,5 +1,5 @@
 bundle agent va_command_in_shell(command, codes, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_command
 # @brief    Execute 'command' within a shell
 #
 # @classes  va_command_in_shell_${ccommand}_(kept|repaired|failed)
