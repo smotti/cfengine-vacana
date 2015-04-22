@@ -1,5 +1,5 @@
 bundle agent va_package_specific_manage(desired, package, package_version, package_arch, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_generic
 # @brief    Ensure 'desired' state for 'package' of 'package_version' and
 #           'package_arch'
 #
@@ -51,7 +51,7 @@ bundle agent va_package_specific_manage(desired, package, package_version, packa
         handle                => "va_package_specific_manage_packages_not_filebased",
         action                => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes               => classes_generic("${class_prefix}"),
+        classes               => va_classes_generic("${class_prefix}"),
         package_policy        => "${desired}",
         package_select        => ">=",
         package_version       => "${package_version}",
@@ -64,7 +64,7 @@ bundle agent va_package_specific_manage(desired, package, package_version, packa
         handle                => "va_package_specific_manage_packages_filebased",
         action                => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes               => classes_generic("${class_prefix}"),
+        classes               => va_classes_generic("${class_prefix}"),
         package_policy        => "${desired}",
         package_select        => ">=",
         package_version       => "${package_version}",
@@ -77,7 +77,7 @@ bundle agent va_package_specific_manage(desired, package, package_version, packa
         handle                => "va_package_specific_manage_packages_not_filebased",
         action                => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes               => classes_generic("${class_prefix}"),
+        classes               => va_classes_generic("${class_prefix}"),
         package_policy        => "${desired}",
         package_select        => ">=",
         package_version       => "${package_version}",
@@ -90,7 +90,7 @@ bundle agent va_package_specific_manage(desired, package, package_version, packa
         handle                => "va_package_specific_manage_packages_not_filebased",
         action                => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes               => classes_generic("${class_prefix}"),
+        classes               => va_classes_generic("${class_prefix}"),
         package_policy        => "${desired}",
         package_select        => ">=",
         package_version       => "${package_version}",

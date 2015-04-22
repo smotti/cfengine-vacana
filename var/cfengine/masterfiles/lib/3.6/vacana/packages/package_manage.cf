@@ -1,5 +1,5 @@
 bundle agent va_package_manage(desired, package, promisee)
-# @depends  va_log_promise
+# @depends  va_log_promise va_classes_generic
 # @brief    Ensure that 'package' has 'desired' state
 #
 # @classes  va_package_${desired}_${cpackage}_(kept|repaired|failed)
@@ -30,7 +30,7 @@ bundle agent va_package_manage(desired, package, promisee)
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
+        classes        => va_classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => apt_get_permissive;
 
@@ -40,7 +40,7 @@ bundle agent va_package_manage(desired, package, promisee)
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
+        classes        => va_classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => yum_rpm_permissive;
 
@@ -50,7 +50,7 @@ bundle agent va_package_manage(desired, package, promisee)
         handle         => "va_package_add_packages_manage",
         action         => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
+        classes        => va_classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => zypper;
 
@@ -60,7 +60,7 @@ bundle agent va_package_manage(desired, package, promisee)
         handle         => "va_package_add_packages_add",
         action         => va_log_promise(
           "${class_prefix}", "${this.promiser}", "${promisee}"),
-        classes        => classes_generic("${class_prefix}"),
+        classes        => va_classes_generic("${class_prefix}"),
         package_policy => "${desired}",
         package_method => generic;
 }
