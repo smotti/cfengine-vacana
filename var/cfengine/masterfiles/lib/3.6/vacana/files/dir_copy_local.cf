@@ -1,4 +1,4 @@
-bundle agent va_file_copy_local(src, dest, promisee)
+bundle agent va_dir_copy_local(src, dest, promisee)
 # @depends  va_log_promise va_classes_generic recurse_with_base
 # @brief    Copy 'src' to 'dest' on local host
 #
