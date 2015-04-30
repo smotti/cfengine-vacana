@@ -41,7 +41,7 @@ bundle agent va_package_specific_manage(desired, package, package_version, packa
       comment => "Use regex to extract package_basename from path if package
         is a file. The method in the stdlib doesn't work.",
       expression => regextract(
-        "([\w\d\-]*)_.*", ${package_name}, "package_basename");
+        "([\w\d\-]*)_.*", ${package}, "package_basename");
 
   packages:
 
