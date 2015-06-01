@@ -34,7 +34,7 @@ body common control
 
     # Host inventory
     va_host_info_report,
-    inventory_client_get,
+    va_inventory_client_get,
 
     # Vacana postrequisits
     va_post_promises_report,
