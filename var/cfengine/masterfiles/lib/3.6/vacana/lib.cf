@@ -8,6 +8,7 @@ bundle common vacana_lib
         # Common bundles
         "${this.promise_dirname}/common.cf",
 	      "${this.promise_dirname}/promises_reports.cf",
+        "${this.promise_dirname}/va_host_info_reports.cf",
 
         # Commands bundles
         "${this.promise_dirname}/commands/command_in_shell.cf",
