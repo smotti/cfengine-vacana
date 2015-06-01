@@ -14,7 +14,6 @@ body common control
 
     # CFE internals
     "cfe_internal/CFE_cfengine.cf",
-    "cfe_internal/host_info_report.cf",
 
     # Our custom stuff
     "inventory/inventory.cf",
@@ -36,7 +35,6 @@ body common control
 #    test_va_logging,
 
     # Host inventory
-    host_info_report,
     inventory_client_get,
 
     # Vacana postrequisits
