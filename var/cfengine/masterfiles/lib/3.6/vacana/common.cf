@@ -9,8 +9,8 @@ bundle common va_c
 
     "va_logs"
       comment => "Directory where reports/logs are stored, that are created by vacana",
-      string  => "/var/cfengine/vacana";
-    
+      string  => "/var/cfengine/vacana/promises";
+
     "promise_log"
       comment => "File to log promises to without their outcome",
       string  => "${va_logs}/promises.log";
