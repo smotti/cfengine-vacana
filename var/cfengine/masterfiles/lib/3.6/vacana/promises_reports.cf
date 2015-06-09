@@ -24,6 +24,7 @@ bundle agent va_pre_promises_report
       };
       "promise_log_exists" expression => fileexists("${va_c.promise_log}");
       "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
+      "classes_log_exists" expression => fileexists("${va_c.classes_log}");
 
     am_policy_hub::
 
@@ -44,19 +45,22 @@ bundle agent va_pre_promises_report
     any.dir_vacana_exists::
 
       "${va_c.promise_log}" -> { "vacana" }
-        comment => "Delete old ${va_c.promise_log}",
-        handle  => "va_pre_promises_report_files_delete_promise_log",
-        delete  => tidy;
+        comment    => "Delete old ${va_c.promise_log}",
+        handle     => "va_pre_promises_report_files_delete_promise_log",
+        ifvarclass => "promise_log_exists",
+        delete     => tidy;
 
       "${va_c.outcome_log}" -> { "vacana" }
-        comment => "Delete old ${va_c.outcome_log}",
-        handle  => "va_pre_promises_report_files_delete_outcome_log",
-        delete  => tidy;
+        comment    => "Delete old ${va_c.outcome_log}",
+        handle     => "va_pre_promises_report_files_delete_outcome_log",
+        ifvarclass => "outcome_log_exists",
+        delete     => tidy;
 
       "${va_c.classes_log}" -> { "vacana" }
-        comment => "Delete old ${va_c.classes_log}",
-        handle  => "va_pre_promises_report_files_delete_classes_log",
-        delete  => tidy;
+        comment    => "Delete old ${va_c.classes_log}",
+        handle     => "va_pre_promises_report_files_delete_classes_log",
+        ifvarclass => "classes_log_exists",
+        delete     => tidy;
 
     am_policy_hub.!dir_for_client_logs_exists::
 
