@@ -92,44 +92,53 @@ bundle agent va_promises_report
     "tags" slist     => { "report", "vacana" };
 
   vars:
-    "params"
-      comment => "Fields in promises.log",
-      data    => parsejson(
-	      '{
-            "0": "prefix",
-            "1": "handle",
-	          "2": "promiser",
-	          "3": "promisee"
-	      }'
-      );
 
-    "p"
-      comment => "Params indices",
-      slist   => getindices("params");
+    promise_log_exists::
 
-    "read"
-      comment => "Read ${va_c.promise_log} into an array",
-      int => readstringarrayidx(
-	      "promises",
-	      "${va_c.promise_log}",
-	      "",
-	      "${va_c.log_delim}",
-	      "${va_c.max_num}",
-	      "${va_c.max_bytes}"
-      );
+      "params"
+        comment => "Fields in promises.log",
+        data    => parsejson(
+	        '{
+              "0": "prefix",
+              "1": "handle",
+	            "2": "promiser",
+	            "3": "promisee"
+	        }'
+        );
+  
+      "p"
+        comment => "Params indices",
+        slist   => getindices("params");
+  
+      "read"
+        comment => "Read ${va_c.promise_log} into an array",
+        int => readstringarrayidx(
+	        "promises",
+	        "${va_c.promise_log}",
+	        "",
+	        "${va_c.log_delim}",
+	        "${va_c.max_num}",
+	        "${va_c.max_bytes}"
+        );
 
-    "i"
-      comment => "Index csv file",
-      slist   => getindices("promises");
+      "i"
+        comment => "Index csv file",
+        slist   => getindices("promises");
 
-    # Note: This one is copied from efl lib.
-    "d[${i}][${params[${p}]}]"
-      comment => "Make final data set",
-      string  => "${promises[${i}][${p}]}";
+      # Note: This one is copied from efl lib.
+      "d[${i}][${params[${p}]}]"
+        comment => "Make final data set",
+        string  => "${promises[${i}][${p}]}";
+
+  any::
 
     "all_classes"
       comment => "Get a list of all defined classes",
       slist   => classesmatching(".*");
+
+  classes:
+
+    "promise_log_exists" expression => fileexists("${va_c.promise_log}");
 
   files:
 
