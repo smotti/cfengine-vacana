@@ -142,8 +142,10 @@ bundle agent va_promises_report
 
   files:
 
-    "${va_c.promise_log}"
-      delete => tidy;
+    promise_log_exists::
+
+      "${va_c.promise_log}"
+        delete => tidy;
 
   reports:
 
