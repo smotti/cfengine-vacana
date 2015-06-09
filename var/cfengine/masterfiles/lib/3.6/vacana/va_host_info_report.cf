@@ -17,7 +17,7 @@ bundle common va_hir_g
       string  => "${sys.workdir}/vacana/host_info";
     "tool_generate_report"
       comment => "Path to the tool responsible for generating the final JSON report",
-      string  => "${sys.workdir}/tools/generate_report.py";
+      string  => "${sys.workdir}/tools/va_generate_report.py";
 
   classes:
 
