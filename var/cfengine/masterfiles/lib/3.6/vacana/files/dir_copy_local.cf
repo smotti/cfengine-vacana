@@ -27,7 +27,7 @@ bundle agent va_dir_copy_local(src, dest, promisee)
       comment   => "Copy ${src} to ${dest}",
       handle    => "va_dir_copy_local_files_copy",
       action    => va_log_promise(
-	      "${class_prefix}", "${this.promiser}", "${promisee}"),
+	      "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
       classes      => va_classes_generic("${class_prefix}"),
       depth_search => recurse_with_base("inf"),
       copy_from    => local_dcp("${src}");

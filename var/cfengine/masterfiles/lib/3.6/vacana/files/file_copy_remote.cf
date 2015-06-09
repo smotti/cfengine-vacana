@@ -28,7 +28,7 @@ bundle agent va_file_copy_remote(src, server, dest, promisee)
       comment   => "Copy ${src} from ${server} to local ${dest}",
       handle    => "va_file_copy_remote_files_copy",
       action    => va_log_promise(
-        "${class_prefix}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
       classes   => va_classes_generic("${class_prefix}"),
       copy_from => secure_cp("${src}", "${server}");
 }

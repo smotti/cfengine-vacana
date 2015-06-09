@@ -27,7 +27,7 @@ bundle agent va_file_sym_link(target, link_name, promisee)
       comment   => "Create symbolic link ${link_name} that points to ${target}",
       handle    => "va_file_sym_link_files_create_link",
       action    => va_log_promise(
-        "${class_prefix}", "${this.promiser}", "${promisee}"),
+        "${class_prefix}", "${this.handle}", "${this.promiser}", "${promisee}"),
       classes   => va_classes_generic("${class_prefix}"),
       link_from => ln_s("${target}");
 }
