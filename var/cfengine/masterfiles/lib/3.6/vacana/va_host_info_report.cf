@@ -48,7 +48,7 @@ bundle agent va_host_info_report
 
     !dir_reports_exists::
 
-      "${va_hir_g.dir_reports}"
+      "${va_hir_g.dir_reports}/."
         comment => "Create required directory, where reports will be stored",
         handle  => "va_host_info_report_files_create_dir_reports",
         create  => "true";
