@@ -57,7 +57,7 @@ bundle agent va_inventory_client_get
       comment => "Ensure ${report_dir} exists",
       handle  => "va_inventory_client_get_files_report_dir",
       action  => va_log_promise(
-        "${crd}", "${this.promiser}", "${this.bundle}"),
+        "${crd}", "${this.handle}", "${this.promiser}", "${this.bundle}"),
       classes => va_classes_generic("${crd}"),
       create  => "true",
       perms   => m("644");
@@ -68,7 +68,7 @@ bundle agent va_inventory_client_get
         comment => "Ensure ${client_report_dir} exists on policy hub",
         handle  => "va_inventory_client_get_files_client_report_dir",
         action  => va_log_promise(
-          "${ccrd}", "${this.promiser}", "${this.bundle}"),
+          "${ccrd}", "${this.handle}", "${this.promiser}", "${this.bundle}"),
         classes => va_classes_generic("${ccrd}"),
         create  => "true",
         perms   => m("644");
@@ -79,7 +79,7 @@ bundle agent va_inventory_client_get
         comment     => "Garbage collection of old inventories",
         handle      => "va_inventory_client_get_files_client_report_dir_tidy",
         action  => va_log_promise(
-          "${ccrd}_dir_tidy", "${this.promiser}", "${this.bundle}"),
+          "${ccrd}_dir_tidy", "${this.handle}", "${this.promiser}", "${this.bundle}"),
         classes => va_classes_generic("${ccrd}_dir_tidy"),
         file_select => plain,
         delete      => tidy;
