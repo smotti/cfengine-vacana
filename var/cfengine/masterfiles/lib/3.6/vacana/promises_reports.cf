@@ -145,27 +145,32 @@ bundle agent va_promises_report
     promise_log_exists::
 
       "${va_c.promise_log}"
-        delete => tidy;
+        delete     => tidy;
 
   reports:
 
     "${all_classes}"
       report_to_file => "${va_c.classes_log}";
 
-    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; kept"
-      comment        => "If promise of promiser was kept",
-      ifvarclass     => "${d[${i}][prefix]}_kept",
-      report_to_file => "${va_c.outcome_log}";
+    promise_log_exists::
 
-    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; repaired"
-      comment        => "If promise of promiser was repaired",
-      ifvarclass     => "${d[${i}][prefix]}_repaired",
-      report_to_file => "${va_c.outcome_log}";
+      "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; kept"
+        comment        => "If promise of promiser was kept",
+        handle         => "va_promises_report_reports_log_kept",
+        ifvarclass     => "${d[${i}][prefix]}_kept",
+        report_to_file => "${va_c.outcome_log}";
 
-    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; failed"
-      comment        => "If promise of promiser was failed",
-      ifvarclass     => "${d[${i}][prefix]}_failed",
-      report_to_file => "${va_c.outcome_log}";
+      "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; repaired"
+        comment        => "If promise of promiser was repaired",
+        handle         => "va_promises_report_reports_log_repaired",
+        ifvarclass     => "${d[${i}][prefix]}_repaired",
+        report_to_file => "${va_c.outcome_log}";
+
+      "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; failed"
+        comment        => "If promise of promiser was failed",
+        handle         => "va_promises_report_reports_log_failed",
+        ifvarclass     => "${d[${i}][prefix]}_failed",
+        report_to_file => "${va_c.outcome_log}";
 }
 
 
