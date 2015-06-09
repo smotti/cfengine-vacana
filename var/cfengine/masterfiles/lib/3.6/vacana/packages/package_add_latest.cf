@@ -25,8 +25,9 @@ bundle agent va_package_add_latest(package, promisee)
     debian::
 
       "${package}"
+        handle          => "va_package_add_latest_packages_add_package",
         action          => va_log_promise(
-          "${class_prefix}", "${this.promiser}", "${this.bundle}"
+          "${class_prefix}", "${this.handle}", "${this.promiser}", "${this.bundle}"
         ),
         classes         => va_classes_generic("${class_prefix}"),
         package_policy  => "addupdate",
@@ -36,8 +37,9 @@ bundle agent va_package_add_latest(package, promisee)
     redhat::
 
       "${package}"
+        handle          => "va_package_add_latest_packages_add_package",
         action          => va_log_promise(
-          "${class_prefix}", "${this.promiser}", "${this.bundle}"
+          "${class_prefix}", "${this.handle}", "${this.promiser}", "${this.bundle}"
         ),
         classes         => va_classes_generic("${class_prefix}"),
         package_policy  => "addupdate",
@@ -47,8 +49,9 @@ bundle agent va_package_add_latest(package, promisee)
     suse::
 
       "${package}"
+        handle          => "va_package_add_latest_packages_add_package",
         action          => va_log_promise(
-          "${class_prefix}", "${this.promiser}", "${this.bundle}"
+          "${class_prefix}", "${this.handle}", "${this.promiser}", "${this.bundle}"
         ),
         classes         => va_classes_generic("${class_prefix}"),
         package_policy  => "addupdate",
@@ -58,8 +61,9 @@ bundle agent va_package_add_latest(package, promisee)
     !debian.!redhat.!suse::
 
       "${package}"
+        handle          => "va_package_add_latest_packages_add_package",
         action          => va_log_promise(
-          "${class_prefix}", "${this.promiser}", "${this.bundle}"
+          "${class_prefix}", "${this.handle}", "${this.promiser}", "${this.bundle}"
         ),
         classes         => va_classes_generic("${class_prefix}"),
         package_policy  => "addupdate",

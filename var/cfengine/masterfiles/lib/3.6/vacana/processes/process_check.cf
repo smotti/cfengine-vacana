@@ -21,7 +21,7 @@ bundle agent va_process_check(proc_regex, restart_class, promisee)
       comment       => "Check process table for a match with ${proc_regex}",
       handle        => "va_process_check_processes_proc_regex",
       action        => va_log_promise(
-        "${restart_class}", "${this.promiser}", "${promisee}"),
+        "${restart_class}", "${this.handle}", "${this.promiser}", "${promisee}"),
       classes       => va_classes_generic("${restart_class}"),
       restart_class => "${restart_class}"; 
 }

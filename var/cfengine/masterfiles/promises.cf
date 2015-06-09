@@ -14,12 +14,10 @@ body common control
 
     # CFE internals
     "cfe_internal/CFE_cfengine.cf",
-    "cfe_internal/host_info_report.cf",
 
     # Our custom stuff
     "inventory/inventory.cf",
     "lib/3.6/vacana/lib.cf",
-    "test.cf",
   };
 
   bundlesequence => { 
@@ -33,11 +31,10 @@ body common control
     va_pre_promises_report,
 
     # PUT YOUR BUNDLES HERE
-#    test_va_logging,
 
     # Host inventory
-    host_info_report,
-    inventory_client_get,
+    va_host_info_report,
+    va_inventory_client_get,
 
     # Vacana postrequisits
     va_post_promises_report,
