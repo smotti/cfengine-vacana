@@ -29,7 +29,7 @@ bundle common va_c
 
     "log_delim"
       comment => "Delimiter used in promise logs",
-      string  => "\s*;;\s*";
+      string  => ";\s*";
 
     "max_num"
       comment => "Maximum number of lines to read from a file",

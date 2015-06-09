@@ -97,8 +97,9 @@ bundle agent va_promises_report
       data    => parsejson(
 	      '{
             "0": "prefix",
-	          "1": "promiser",
-	          "2": "promisee"
+            "1": "handle",
+	          "2": "promiser",
+	          "3": "promisee"
 	      }'
       );
 
@@ -140,17 +141,17 @@ bundle agent va_promises_report
     "${all_classes}"
       report_to_file => "${va_c.classes_log}";
 
-    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; kept"
+    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; kept"
       comment        => "If promise of promiser was kept",
       ifvarclass     => "${d[${i}][prefix]}_kept",
       report_to_file => "${va_c.outcome_log}";
 
-    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; repaired"
+    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; repaired"
       comment        => "If promise of promiser was repaired",
       ifvarclass     => "${d[${i}][prefix]}_repaired",
       report_to_file => "${va_c.outcome_log}";
 
-    "${d[${i}][prefix]} ;; ${d[${i}][promiser]} ;; ${d[${i}][promisee]} ;; failed"
+    "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; failed"
       comment        => "If promise of promiser was failed",
       ifvarclass     => "${d[${i}][prefix]}_failed",
       report_to_file => "${va_c.outcome_log}";
@@ -183,6 +184,11 @@ bundle agent va_post_promises_report
 # va_get_client_promises_report
 #
 # - Fetch promises reports from clients
+#
+# NOTE: This is only recommended for small infrastructures, on very large
+#       infrastructures this can lead to large amounts of small disk I/Os on
+#       the hub and thus cause a huge decrease in performance (see inventory
+#       bundle for more info).
 #
 ###############################################################################
 
