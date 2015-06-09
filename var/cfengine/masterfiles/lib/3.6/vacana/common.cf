@@ -50,18 +50,19 @@ bundle common va_c
 # TODO: Add bundle to create log files, if they don't exist, and if they do
 #	remove them.
 
-body action va_log_promise(class_prefix, promiser, promisee)
+body action va_log_promise(class_prefix, handle, promiser, promisee)
 # @brief  Log a string to va_c.promise_log with given params.
-# @param  handle    Promise handle
-# @param  promiser  Promiser of the promise
-# @param  promisee  Who makes the promise
+# @param  class_prefix  Class prefix to determine promise outcome
+# @param  handle        Promise handle
+# @param  promiser      Promiser of the promise
+# @param  promisee      Who makes the promise
 {
   ifelapsed => "1";
 
   log_kept     => "${va_c.promise_log}";
   log_repaired => "${va_c.promise_log}";
   log_failed   => "${va_c.promise_log}";
-  log_string   => "${class_prefix} ;; ${promiser} ;; ${promisee}";
+  log_string   => "${class_prefix}; ${handle}; ${promiser}; ${promisee}";
 }
 
 
