@@ -57,6 +57,12 @@ bundle agent va_host_info_report
 
     linux|unix::
 
+      "Tool"
+        comment => "Ensure generate_report tool has proper perms",
+        usebundle => va_file_perms(
+          "${va_hir_g.tool_generate_report}", "0700", "root", "root", "${this.bundle}"
+        );
+
       "OS"
         comment   => "Collect some general information about the OS",
         usebundle => va_host_info_report_os;
