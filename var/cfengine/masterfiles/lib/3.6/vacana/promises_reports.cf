@@ -23,8 +23,6 @@ bundle agent va_pre_promises_report
         isdir("${va_c.va_logs}")
       };
       "promise_log_exists" expression => fileexists("${va_c.promise_log}");
-      "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
-      "classes_log_exists" expression => fileexists("${va_c.classes_log}");
 
     am_policy_hub::
 
@@ -35,31 +33,19 @@ bundle agent va_pre_promises_report
 
   files:
 
-    any.!dir_vacana_exists::
+    !dir_vacana_exists::
 
       "${va_c.va_logs}/." -> { "vacana" }
         comment  => "Create directory ${va_c.va_logs} for vacana logs/reports",
         handle   => "va_pre_promises_report_files_create_va_logs",
         create   => "true";
 
-    any.dir_vacana_exists::
+    dir_vacana_exists::
 
       "${va_c.promise_log}" -> { "vacana" }
         comment    => "Delete old ${va_c.promise_log}",
         handle     => "va_pre_promises_report_files_delete_promise_log",
         ifvarclass => "promise_log_exists",
-        delete     => tidy;
-
-      "${va_c.outcome_log}" -> { "vacana" }
-        comment    => "Delete old ${va_c.outcome_log}",
-        handle     => "va_pre_promises_report_files_delete_outcome_log",
-        ifvarclass => "outcome_log_exists",
-        delete     => tidy;
-
-      "${va_c.classes_log}" -> { "vacana" }
-        comment    => "Delete old ${va_c.classes_log}",
-        handle     => "va_pre_promises_report_files_delete_classes_log",
-        ifvarclass => "classes_log_exists",
         delete     => tidy;
 
     am_policy_hub.!dir_for_client_logs_exists::
@@ -139,8 +125,24 @@ bundle agent va_promises_report
   classes:
 
     "promise_log_exists" expression => fileexists("${va_c.promise_log}");
+    "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
+    "classes_log_exists" expression => fileexists("${va_c.classes_log}");
 
   files:
+
+    outcome_log_exists::
+
+      "${va_c.outcome_log}" -> { "vacana" }
+        comment    => "Delete old ${va_c.outcome_log}",
+        handle     => "va_pre_promises_report_files_delete_outcome_log",
+        delete     => tidy;
+
+    classes_log_exists::
+
+      "${va_c.classes_log}" -> { "vacana" }
+        comment    => "Delete old ${va_c.classes_log}",
+        handle     => "va_pre_promises_report_files_delete_classes_log",
+        delete     => tidy;
 
     promise_log_exists::
 
