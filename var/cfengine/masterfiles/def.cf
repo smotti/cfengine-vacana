@@ -95,4 +95,9 @@ bundle common def
     # Internal CFEngine log files rotation
     "enable_cfe_internal_log_rotation"
       expression => "any";
+
+    # Vacana options
+    "va_get_client_promises_report"
+      comment    => "Disable if policy hub should not fetch reports from clients",
+      expression => "any";
 }

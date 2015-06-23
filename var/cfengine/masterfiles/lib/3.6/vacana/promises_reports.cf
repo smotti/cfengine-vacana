@@ -219,7 +219,7 @@ bundle agent va_post_promises_report
         handle    => "va_post_promises_report_methods_generate_promises_report",
         usebundle => va_promises_report;
 
-    am_policy_hub::
+    am_policy_hub.va_get_client_promises_report::
 
       "fetch report from clients"
         usebundle => va_get_client_promises_report;
