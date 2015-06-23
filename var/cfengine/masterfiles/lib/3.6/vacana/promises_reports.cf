@@ -23,6 +23,9 @@ bundle agent va_pre_promises_report
         isdir("${va_c.va_logs}")
       };
       "promise_log_exists" expression => fileexists("${va_c.promise_log}");
+      "delete_once" 
+        scope      => "namespace",
+        expression => "any";
 
     am_policy_hub::
 
@@ -125,29 +128,12 @@ bundle agent va_promises_report
   classes:
 
     "promise_log_exists" expression => fileexists("${va_c.promise_log}");
-    "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
-    "classes_log_exists" expression => fileexists("${va_c.classes_log}");
 
-  files:
+  methods:
 
-    outcome_log_exists::
-
-      "${va_c.outcome_log}" -> { "vacana" }
-        comment    => "Delete old ${va_c.outcome_log}",
-        handle     => "va_pre_promises_report_files_delete_outcome_log",
-        delete     => tidy;
-
-    classes_log_exists::
-
-      "${va_c.classes_log}" -> { "vacana" }
-        comment    => "Delete old ${va_c.classes_log}",
-        handle     => "va_pre_promises_report_files_delete_classes_log",
-        delete     => tidy;
-
-    promise_log_exists::
-
-      "${va_c.promise_log}"
-        delete     => tidy;
+    "cleanup"
+      comment   => "Remove old reports first",
+      usebundle => va_promises_report_cleanup;
 
   reports:
 
@@ -156,6 +142,7 @@ bundle agent va_promises_report
 
     promise_log_exists::
 
+      "HELLO WORLD";
       "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; kept"
         comment        => "If promise of promiser was kept",
         handle         => "va_promises_report_reports_log_kept",
@@ -176,6 +163,31 @@ bundle agent va_promises_report
 }
 
 
+bundle agent va_promises_report_cleanup
+{
+  classes:
+
+    "outcome_log_exists" expression => fileexists("${va_c.outcome_log}");
+    "classes_log_exists" expression => fileexists("${va_c.classes_log}");
+
+  files:
+
+    outcome_log_exists::
+
+      "${va_c.outcome_log}" -> { "vacana" }
+        comment    => "Delete old ${va_c.outcome_log}",
+        handle     => "va_promises_report_cleanup_files_delete_outcome_log",
+        delete     => tidy;
+
+    classes_log_exists::
+
+      "${va_c.classes_log}" -> { "vacana" }
+        comment    => "Delete old ${va_c.classes_log}",
+        handle     => "va_promises_report_cleanup_files_delete_classes_log",
+        delete     => tidy;
+}
+
+
 ###############################################################################
 #
 # va_post_promises_report
@@ -184,11 +196,27 @@ bundle agent va_promises_report
 
 bundle agent va_post_promises_report
 {
+
+  classes:
+
+    "promise_log_exists" expression => fileexists("${va_c.promise_log}");
+
+  files:
+
+    promise_log_exists::
+
+      "${va_c.promise_log}"
+        depends_on => {
+          "va_post_promises_report_methods_generate_promises_report"
+        },
+        delete     => tidy;
+
   methods:
 
     any::
 
       "generate promises report"
+        handle    => "va_post_promises_report_methods_generate_promises_report",
         usebundle => va_promises_report;
 
     am_policy_hub::
