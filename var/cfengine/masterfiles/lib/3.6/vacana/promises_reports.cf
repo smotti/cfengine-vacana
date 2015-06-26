@@ -142,7 +142,6 @@ bundle agent va_promises_report
 
     promise_log_exists::
 
-      "HELLO WORLD";
       "${d[${i}][prefix]}; ${d[${i}][handle]}; ${d[${i}][promiser]}; ${d[${i}][promisee]}; kept"
         comment        => "If promise of promiser was kept",
         handle         => "va_promises_report_reports_log_kept",
