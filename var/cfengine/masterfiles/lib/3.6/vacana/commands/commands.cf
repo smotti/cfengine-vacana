@@ -4,8 +4,8 @@ bundle common va_commands
 
     "inputs"
       slist => {
-        "${this.promise_dirname}/commands/command_in_shell.cf",
-        "${this.promise_dirname}/commands/command_in_shell_and_silent.cf",
+        "${this.promise_dirname}/command_in_shell.cf",
+        "${this.promise_dirname}/command_in_shell_and_silent.cf",
       };
 }
 

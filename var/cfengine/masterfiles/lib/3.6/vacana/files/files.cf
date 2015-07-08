@@ -4,15 +4,15 @@ bundle common va_files
 
     "inputs"
       slist => {
-        "${this.promise_dirname}/files/dir_copy_local.cf",
-        "${this.promise_dirname}/files/dir_remove.cf",
-	      "${this.promise_dirname}/files/file_copy_local.cf",
-        "${this.promise_dirname}/files/file_copy_remote.cf",
-        "${this.promise_dirname}/files/file_create.cf",
-        "${this.promise_dirname}/files/file_edit_template.cf",
-        "${this.promise_dirname}/files/file_perms.cf",
-	      "${this.promise_dirname}/files/file_remove.cf",
-        "${this.promise_dirname}/files/file_sym_link.cf",
+        "${this.promise_dirname}/dir_copy_local.cf",
+        "${this.promise_dirname}/dir_remove.cf",
+	      "${this.promise_dirname}/file_copy_local.cf",
+        "${this.promise_dirname}/file_copy_remote.cf",
+        "${this.promise_dirname}/file_create.cf",
+        "${this.promise_dirname}/file_edit_template.cf",
+        "${this.promise_dirname}/file_perms.cf",
+	      "${this.promise_dirname}/file_remove.cf",
+        "${this.promise_dirname}/file_sym_link.cf",
       };
 }
 

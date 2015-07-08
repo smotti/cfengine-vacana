@@ -4,11 +4,11 @@ bundle common va_services
 
     "inputs"
       slist => {
-        "${this.promise_dirname}/services/service_manage.cf",
-        "${this.promise_dirname}/services/service_reload.cf",
-        "${this.promise_dirname}/services/service_restart.cf",
-        "${this.promise_dirname}/services/service_start.cf",
-        "${this.promise_dirname}/services/service_stop.cf",
+        "${this.promise_dirname}/service_manage.cf",
+        "${this.promise_dirname}/service_reload.cf",
+        "${this.promise_dirname}/service_restart.cf",
+        "${this.promise_dirname}/service_start.cf",
+        "${this.promise_dirname}/service_stop.cf",
       };
 }
 
