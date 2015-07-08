@@ -1,0 +1,22 @@
+bundle common va_packages
+{
+  vars:
+
+    "inputs"
+      slist => {
+        # Packages bundles
+        "${this.promise_dirname}/packages/package_add.cf",
+        "${this.promise_dirname}/packages/package_add_latest.cf",
+        "${this.promise_dirname}/packages/package_add_release.cf",
+        "${this.promise_dirname}/packages/package_check_present.cf",
+        "${this.promise_dirname}/packages/package_delete.cf",
+        "${this.promise_dirname}/packages/package_manage.cf",
+        "${this.promise_dirname}/packages/package_specific_add.cf",
+        "${this.promise_dirname}/packages/package_specific_manage.cf",
+      };
+}
+
+body file control
+{
+  inputs => { "@{va_packages.inputs}" };
+}
