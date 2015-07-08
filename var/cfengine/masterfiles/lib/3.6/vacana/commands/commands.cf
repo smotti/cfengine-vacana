@@ -1,0 +1,15 @@
+bundle common va_commands
+{
+  vars:
+
+    "inputs"
+      slist => {
+        "${this.promise_dirname}/commands/command_in_shell.cf",
+        "${this.promise_dirname}/commands/command_in_shell_and_silent.cf",
+      };
+}
+
+body file control
+{
+  inputs => { "@{va_commands.inputs}" };
+}

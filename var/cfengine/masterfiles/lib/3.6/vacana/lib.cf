@@ -12,8 +12,7 @@ bundle common vacana_lib
         "${this.promise_dirname}/va_inventory.cf",
 
         # Commands bundles
-        "${this.promise_dirname}/commands/command_in_shell.cf",
-        "${this.promise_dirname}/commands/command_in_shell_and_silent.cf",
+        "${this.promise_dirname}/commands/commands.cf",
 
         # Files bundles
         "${this.promise_dirname}/files/dir_copy_local.cf",
