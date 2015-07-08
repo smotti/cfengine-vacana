@@ -14,6 +14,12 @@ bundle common va_packages
         "${this.promise_dirname}/package_methods.cf",
         "${this.promise_dirname}/package_specific_add.cf",
         "${this.promise_dirname}/package_specific_manage.cf",
+
+        # Gem bundles
+        "${this.promise_dirname}/package_gem_add.cf",
+        "${this.promise_dirname}/package_gem_delete.cf",
+        "${this.promise_dirname}/package_gem_manage.cf",
+        "${this.promise_dirname}/package_gem_update.cf",
       };
 }
 
