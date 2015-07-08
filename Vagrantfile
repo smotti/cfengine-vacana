@@ -16,8 +16,6 @@ Vagrant.configure(2) do |config|
       owner: "root", group: "root"
     hub.vm.synced_folder "./var/cfengine/prototypes/", "/var/cfengine/prototypes",
       owner: "root", group: "root"
-    hub.vm.synced_folder "./var/cfengine/tools/", "/var/cfengine/tools",
-      owner: "root", group: "root"
     hub.vm.provision "ansible" do |a|
       a.playbook = "provision/hub.yml"
       a.sudo = true
