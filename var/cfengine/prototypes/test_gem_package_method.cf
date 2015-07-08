@@ -1,0 +1,45 @@
+body common control
+{
+  inputs => {
+    "${sys.libdir}/stdlib.cf",
+    "${sys.libdir}/vacana/lib.cf",
+  };
+
+  bundlesequence => { "test_gem_package_method" };
+}
+
+bundle agent test_gem_package_method
+{
+  vars:
+
+    "gem"  string => "riemann-dash";
+    "opts" string => "--no-rdoc --no-ri";
+
+    "cgem" string => canonify("${gem}");
+
+    "class_prefix" string => "${this.bundle}_${cgem}";
+
+  packages:
+
+    "${gem}"
+      classes         => va_classes_generic("${class_prefix}"),
+      package_policy  => "add",
+      package_method  => va_gem("${opts}");
+
+  methods:
+
+    "check present"
+      usebundle => va_package_check_present("${gem}");
+
+  reports:
+
+    "Failed to add gem ${gem}"
+      ifvarclass => "${class_prefix}_failed";
+    "Installed gem ${gem}"
+      ifvarclass => "${class_prefix}_repaired";
+    "Gem ${gem} already present"
+      ifvarclass => "${class_prefix}_kept";
+
+    "GEM PRESENT"
+      ifvarclass => "${cgem}_present";
+}
