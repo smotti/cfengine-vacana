@@ -11,6 +11,7 @@ bundle common va_packages
         "${this.promise_dirname}/package_check_present.cf",
         "${this.promise_dirname}/package_delete.cf",
         "${this.promise_dirname}/package_manage.cf",
+        "${this.promise_dirname}/package_methods.cf",
         "${this.promise_dirname}/package_specific_add.cf",
         "${this.promise_dirname}/package_specific_manage.cf",
       };
