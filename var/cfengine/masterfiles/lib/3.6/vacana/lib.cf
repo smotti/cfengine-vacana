@@ -21,7 +21,7 @@ bundle common vacana_lib
         "${this.promise_dirname}/packages/packages.cf",
 
         # Processes bundles
-        "${this.promise_dirname}/processes/process_check.cf",
+        "${this.promise_dirname}/processes/processes.cf",
 
         # Services bundles
         "${this.promise_dirname}/services/service_manage.cf",
