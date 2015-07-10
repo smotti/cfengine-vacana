@@ -8,6 +8,7 @@ bundle common va_packages
         "${this.promise_dirname}/package_add.cf",
         "${this.promise_dirname}/package_add_latest.cf",
         "${this.promise_dirname}/package_add_release.cf",
+        "${this.promise_dirname}/package_verify.cf",
         "${this.promise_dirname}/package_check_present.cf",
         "${this.promise_dirname}/package_delete.cf",
         "${this.promise_dirname}/package_manage.cf",
@@ -20,6 +21,7 @@ bundle common va_packages
         "${this.promise_dirname}/package_gem_delete.cf",
         "${this.promise_dirname}/package_gem_manage.cf",
         "${this.promise_dirname}/package_gem_update.cf",
+        "${this.promise_dirname}/package_gem_verify.cf",
       };
 }
 

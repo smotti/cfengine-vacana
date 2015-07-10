@@ -74,7 +74,7 @@ bundle common common_knowledge
 # This common bundle defines general things about platforms.
 {
   vars:
-      "list_update_ifelapsed" string => "240";
+      "list_update_ifelapsed" string => "60";
 }
 
 bundle common debian_knowledge

@@ -2,11 +2,11 @@ bundle agent va_package_gem_manage(desired, gem, options, promisee)
 # @depends  va_log_promise va_classes_generic va_gem va_paths
 # @brief    Ensure that 'gem' is in 'desired' state
 #
-# @classes  va_package_gem_manage_${desired}_${cgem}_(kept|repaired|failed)
+# @classes  va_package_gem_${desired}_${cgem}_(kept|repaired|failed)
 #
 # NOTE: cgem is canonify("${gem}")
 #
-# @param desired    Desired state of gem: add, delete, update
+# @param desired    Desired state of gem: add, delete, update, verify
 # @param gem        Name of the gem
 # @param options    Options to be passed to the gem command
 # @param promisee   A promisee for this promise
