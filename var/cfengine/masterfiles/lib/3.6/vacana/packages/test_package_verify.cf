@@ -12,6 +12,8 @@ bundle common tpvc
       "${sys.libdir}/vacana/lib.cf",
       "${this.promise_dirname}/packages.cf",
     };
+
+    "pkg" string => "htop";
 }
 
 body file control
@@ -21,17 +23,25 @@ body file control
 
 bundle agent test_package_verify
 {
+  methods:
+
+    "delete"
+      usebundle => delete_pkg;
+    "add"
+      usebundle => add_pkg;
+}
+
+bundle agent delete_pkg
+{
   vars:
 
-    "package" string => "htop";
+    "package" string => "${tpvc.pkg}";
     "cpkg"    string => canonify("${package}");
 
   methods:
 
     "delete"
       usebundle => va_package_delete("${package}", "${this.bundle}");
-    "add"
-      usebundle => va_package_add("${package}", "${this.bundle}");
     "verify" 
       usebundle => va_package_verify(
         "${package}", "${this.bundle}"
@@ -39,9 +49,35 @@ bundle agent test_package_verify
 
   reports:
 
-    "Verified ${package}"
+    "delete_pkg: Verified ${package}"
       ifvarclass => "va_package_verify_${cpkg}_kept";
 
-    "Verfication for ${package} failed"
+    "delete_pkg: Verfication for ${package} failed"
+      ifvarclass => "va_package_verify_${cpkg}_failed";
+}
+
+bundle agent add_pkg
+{
+  vars:
+
+    "package" string => "${tpvc.pkg}";
+    "cpkg"    string => canonify("${package}");
+
+  methods:
+
+    "add"
+      usebundle => va_package_add("${package}", "${this.bundle}");
+    "verify" 
+      classes   => if_ok_cancel("va_package_verify_${cpkg}_failed"),
+      usebundle => va_package_verify(
+        "${package}", "${this.bundle}"
+      );
+
+  reports:
+
+    "add_pkg: Verified ${package}"
+      ifvarclass => "va_package_verify_${cpkg}_kept";
+
+    "add_pkg: Verfication for ${package} failed"
       ifvarclass => "va_package_verify_${cpkg}_failed";
 }

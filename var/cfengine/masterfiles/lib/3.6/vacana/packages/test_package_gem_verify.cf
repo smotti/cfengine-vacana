@@ -12,6 +12,8 @@ bundle common tpgvc
       "${sys.libdir}/vacana/lib.cf",
       "${this.promise_dirname}/packages.cf",
     };
+
+    "gem" string => "riemann-dash";
 }
 
 body file control
@@ -21,11 +23,21 @@ body file control
 
 bundle agent test_package_gem_verify
 {
+  methods:
+
+    "delete"
+      usebundle => delete_gem;
+    "add"
+      usebundle => add_gem;
+}
+
+
+bundle agent delete_gem
+{
   vars:
 
-    "package"  string => "riemann-dash";
+    "package"  string => "${tpgvc.gem}";
     "del_opts" string => "-x";
-    "add_opts" string => "--no-rdoc --no-ri";
     "cpkg"     string => canonify("${package}");
 
   methods:
@@ -33,10 +45,6 @@ bundle agent test_package_gem_verify
     "delete"
       usebundle => va_package_gem_delete(
         "${package}", "${del_opts}", "${this.bundle}"
-      );
-    "add"
-      usebundle => va_package_gem_add(
-        "${package}", "${add_opts}", "${this.bundle}"
       );
     "verify" 
       usebundle => va_package_gem_verify(
@@ -50,4 +58,34 @@ bundle agent test_package_gem_verify
 
     "Verfication for ${package} failed"
       ifvarclass => "va_package_gem_verify_${cpkg}_failed";
+}
+
+bundle agent add_gem
+{
+  vars:
+
+    "package"  string => "${tpgvc.gem}";
+    "add_opts" string => "--no-rdoc --no-ri";
+    "cpkg"     string => canonify("${package}");
+
+  methods:
+
+    "add"
+      usebundle => va_package_gem_add(
+        "${package}", "${add_opts}", "${this.bundle}"
+      );
+    "verify" 
+      classes   => if_ok_cancel("va_package_gem_verify_${cpkg}_failed"),
+      usebundle => va_package_gem_verify(
+        "${package}", "${this.bundle}"
+      );
+
+  reports:
+
+    "Verified ${package}"
+      ifvarclass => "va_package_gem_verify_${cpkg}_kept";
+
+    "Verfication for ${package} failed"
+      ifvarclass => "va_package_gem_verify_${cpkg}_failed";
+
 }
