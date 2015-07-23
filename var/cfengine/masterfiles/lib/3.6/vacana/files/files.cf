@@ -5,6 +5,7 @@ bundle common va_files
     "inputs"
       slist => {
         "${this.promise_dirname}/dir_copy_local.cf",
+        "${this.promise_dirname}/dir_copy_remote.cf",
         "${this.promise_dirname}/dir_remove.cf",
 	      "${this.promise_dirname}/file_copy_local.cf",
         "${this.promise_dirname}/file_copy_remote.cf",
