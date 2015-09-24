@@ -16,7 +16,6 @@ body common control
     "cfe_internal/CFE_cfengine.cf",
 
     # Our custom stuff
-    "inventory/inventory.cf",
     "lib/3.6/vacana/lib.cf",
   };
 
@@ -34,7 +33,6 @@ body common control
 
     # Host inventory
     va_host_info_report,
-    va_inventory_client_get,
 
     # Vacana postrequisits
     va_post_promises_report,

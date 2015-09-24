@@ -99,5 +99,5 @@ bundle common def
     # Vacana options
     "va_get_client_promises_report"
       comment    => "Disable if policy hub should not fetch reports from clients",
-      expression => "any";
+      expression => "!any";
 }
